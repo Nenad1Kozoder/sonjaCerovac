@@ -1,0 +1,26 @@
+@use "./breakpoints.scss";
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background: #fff;
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1380px;
+  margin: 0 auto;
+  display: block;
+  width: 100%;
+  position: relative;
+}

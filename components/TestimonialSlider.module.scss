@@ -1,0 +1,14 @@
+.listHolder {
+  max-width: 500px;
+  cursor: grab;
+  user-select: none;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.list {
+  margin: 27px 0 0;
+  list-style: none;
+}

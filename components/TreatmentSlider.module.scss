@@ -1,0 +1,58 @@
+.sliderHoder {
+  display: flex;
+  align-items: center;
+}
+
+.slider {
+  position: relative;
+  overflow: hidden;
+  margin: 0 18.5px;
+}
+
+.sliderTrack {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+  list-style: none;
+}
+
+.slide {
+  min-width: 100%;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 48px;
+  letter-spacing: 0%;
+  text-align: center;
+}
+
+.button {
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  width: 18.5px;
+  height: 26px;
+  overflow: hidden;
+  background: transparent;
+  transition: all 0.3s ease-in-out;
+
+  img {
+    transition: all 0.3s ease-in-out;
+  }
+
+  &:first-of-type {
+    left: -18.5px;
+    img {
+      transform: rotate(-180deg) translate(10px, 10px);
+    }
+  }
+
+  &:last-of-type {
+    right: 0;
+    img {
+      transform: translate(-10px, -10px);
+    }
+  }
+
+  &:hover {
+    transform: scale(1.3);
+  }
+}

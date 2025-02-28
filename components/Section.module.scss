@@ -1,0 +1,120 @@
+.section {
+  position: relative;
+  padding: 52px 40px 78px;
+  display: flex;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.4);
+  border-radius: 28px;
+  max-width: 1380px;
+  margin: 33px auto;
+  overflow: hidden;
+
+  &.isHome {
+    padding: 120px 40px 50px;
+  }
+  &.isImgSmall {
+    .SectionImage {
+      inset: 0 0 0 auto !important;
+      width: auto !important;
+    }
+
+    &.isRight {
+      .SectionImage {
+        inset: 0 auto 0 0 !important;
+      }
+    }
+
+    &::after {
+      display: none;
+    }
+  }
+
+  &.cleanSection {
+    max-width: 1194px;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    display: block;
+    padding: 0;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  &.gridSection {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 50px;
+    padding: 93px 101px 60px;
+    background: #f8f8f8;
+    box-shadow: none;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  &.noOverlay {
+    &::after {
+      display: none;
+    }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background: linear-gradient(90deg, #8c8b8b 0%, rgba(78, 78, 78, 0) 100%);
+  }
+
+  &.isRight {
+    justify-content: flex-end;
+
+    &::after {
+      background: linear-gradient(270deg, #8a8988 0%, rgba(77, 77, 77, 0) 100%);
+    }
+  }
+  &.isBlueOverlay {
+    &::after {
+      background: linear-gradient(90deg, #3b7b9b 0%, rgba(20, 42, 53, 0) 100%);
+    }
+    &.isRight {
+      &::after {
+        background: linear-gradient(
+          270deg,
+          #3b7b9b 22%,
+          rgba(36, 36, 36, 0) 100%
+        );
+      }
+    }
+  }
+
+  &.isGreen_1 {
+    background: linear-gradient(180deg, #2a8d84 0%, #36a9a0 100%);
+    [class*="labelHolder"] {
+      color: #36a9a0;
+    }
+  }
+
+  &.isGreen_2 {
+    background: linear-gradient(180deg, #6ca3a7 0%, #96c8ca 100%);
+    [class*="labelHolder"] {
+      color: #95c7c9;
+    }
+  }
+
+  &.isGreen_3 {
+    background: linear-gradient(180deg, #417f68 0%, #55a585 100%);
+    [class*="labelHolder"] {
+      color: #55a485;
+    }
+  }
+}
+
+.SectionImage {
+  object-fit: cover;
+}
