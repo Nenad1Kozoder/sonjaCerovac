@@ -48,6 +48,7 @@ export default function Home({ data }) {
         isRight={true}
         title={homeTopSection.title}
         isHome={true}
+        noOverlay={true}
       >
         <TextComponent
           title={homeTopSection.title}

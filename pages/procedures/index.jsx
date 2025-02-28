@@ -30,6 +30,7 @@ function Procedures({ data }) {
         imgUrl={featuredImage.node.sourceUrl}
         title={topSection.topTitle}
         isHome={true}
+        noOverlay={true}
       >
         <TextComponent
           title={topSection.topTitle}
