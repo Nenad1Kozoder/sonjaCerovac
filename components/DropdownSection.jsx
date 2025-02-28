@@ -5,7 +5,6 @@ import classes from "./DropdownSection.module.scss";
 import { Fragment } from "react";
 
 function DropdownSection({ title, expertises }) {
-  console.log(expertises);
   return (
     <Fragment>
       <Title as="h2" className="greenRegular">
@@ -14,10 +13,7 @@ function DropdownSection({ title, expertises }) {
       <ul className={classes.expertiseList}>
         {expertises.map((expertise, index) => (
           <li key={index} className={classes.expertiseListItem}>
-            <h4
-              className={classes.itemTitle}
-              onClick={() => dropdownHandler(index)}
-            >
+            <h4 className={classes.itemTitle}>
               {expertise.title}
               <div className={classes.arrowHolder}>
                 <FaAngleDown className={classes.arrow} />

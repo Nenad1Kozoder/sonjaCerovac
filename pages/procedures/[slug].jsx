@@ -4,11 +4,18 @@ import { GET_ALL_PAGES_SLUGS } from "@/queries/getAllPagesSlugs";
 import { GET_TREATMENTS } from "@/queries/getTreatments";
 import { useState, useEffect } from "react";
 import TreatmentSlider from "@/components/TreatmentSlider";
+import { FaAngleDown } from "react-icons/fa6";
+
 import classes from "./[slug].module.scss";
 
 function Page({ page, treatments }) {
   const [activeTab, setActiveTab] = useState("tab0");
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [openIndex, setOpenIndex] = useState(0);
+
+  const toggleAccordion = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
 
   if (!page) return <div>Page not found</div>;
 
@@ -161,9 +168,22 @@ function Page({ page, treatments }) {
                     .filter((tabTreatment) => tabTreatment.tag === tag)
                     .map((treatment, index) => {
                       return (
-                        <li key={index}>
-                          <h3 className={classes.treatmentTitle}>
+                        <li
+                          key={index}
+                          className={
+                            openIndex === index
+                              ? classes.isOpen
+                              : classes.isClosed
+                          }
+                        >
+                          <h3
+                            className={classes.treatmentTitle}
+                            onClick={() => toggleAccordion(index)}
+                          >
                             {treatment.title}
+                            <span className={classes.arrowHolder}>
+                              <FaAngleDown className={classes.arrow} />
+                            </span>
                           </h3>
                           <div
                             className={classes.contentHoder}
