@@ -2,11 +2,13 @@ import client from "@/lib/apolloClient";
 import { GET_PAGE_BY_SLUG } from "@/queries/getPageBySlug";
 import { GET_ALL_PAGES_SLUGS } from "@/queries/getAllPagesSlugs";
 import { GET_TREATMENTS } from "@/queries/getTreatments";
-import { useState, useEffect } from "react";
+import { Fragment, useState } from "react";
 import TreatmentSlider from "@/components/TreatmentSlider";
 import { FaAngleDown } from "react-icons/fa6";
 
 import classes from "./[slug].module.scss";
+import Section from "@/components/Section";
+import TextComponent from "@/components/TextComponent";
 
 function Page({ page, treatments }) {
   const [activeTab, setActiveTab] = useState("tab0");
@@ -18,8 +20,6 @@ function Page({ page, treatments }) {
   };
 
   if (!page) return <div>Page not found</div>;
-
-  const { title, slug, content } = page;
 
   const transformedTreatments = treatments.treatments.nodes.map((treatment) => {
     const category1 =
@@ -62,18 +62,13 @@ function Page({ page, treatments }) {
     };
   });
 
-  console.log("transformedTreatments:", transformedTreatments);
-
   const filterByCategorySlug = (catSlug) => {
     return transformedTreatments
       .filter((treatment) =>
         [treatment.categorySlug1, treatment.categorySlug2].includes(catSlug)
       )
       .map((treatment) => {
-        // Napravi kopiju objekta
         const updatedTreatment = { ...treatment };
-
-        // Definiši koji su slugovi za obradu
         const categories = [
           {
             slug: updatedTreatment.categorySlug1,
@@ -89,7 +84,6 @@ function Page({ page, treatments }) {
 
         categories.forEach(({ slug, category, slugField }) => {
           if (slug === catSlug) {
-            // Zameni category i slug sa odgovarajućim vrednostima
             updatedTreatment.category =
               updatedTreatment[
                 category === "category1" ? "category2" : "category1"
@@ -101,7 +95,6 @@ function Page({ page, treatments }) {
                   : "categorySlug1"
               ];
 
-            // Očisti preostala polja
             delete updatedTreatment[category];
             delete updatedTreatment[slugField];
           }
@@ -135,72 +128,90 @@ function Page({ page, treatments }) {
   };
 
   return (
-    <div className={classes.conntentHolder}>
-      <div className={classes.filterTags}>
-        <TreatmentSlider
-          currentIndex={currentIndex}
-          nextSlide={nextSlide}
-          prevSlide={prevSlide}
-          treatments={uniqueCategories}
-        />
-      </div>
-      <h2 className={classes.title}>Treatment Types</h2>
-      <div className={classes.tabButtons}>
-        {uniqueTags.reverse().map((tag, index) => {
-          return (
-            <button
-              key={index + 1}
-              onClick={() => setActiveTab(`tab${index}`)}
-              className={activeTab === `tab${index}` ? classes.active : ""}
-            >
-              {tag}
-            </button>
-          );
-        })}
-      </div>
-      <div className={classes.tabContent}>
-        {uniqueTags.map((tag, index) => {
-          return (
-            activeTab === `tab${index}` && (
-              <div>
-                <ul className={classes.treatmentList}>
-                  {tabsTreatments
-                    .filter((tabTreatment) => tabTreatment.tag === tag)
-                    .map((treatment, index) => {
-                      return (
-                        <li
-                          key={index}
-                          className={
-                            openIndex === index
-                              ? classes.isOpen
-                              : classes.isClosed
-                          }
-                        >
-                          <h3
-                            className={classes.treatmentTitle}
-                            onClick={() => toggleAccordion(index)}
+    <Fragment>
+      {page.featuredImage && (
+        <Section
+          imgUrl={page.featuredImage.node.sourceUrl}
+          title={page.title}
+          customClass="isGreen"
+          isHome={true}
+        >
+          <TextComponent
+            title={page.title}
+            description={page.content}
+            isWhiteTitle={true}
+            hasBackBtn={true}
+          />
+        </Section>
+      )}
+      <div className={classes.conntentHolder}>
+        <div className={classes.filterTags}>
+          <TreatmentSlider
+            currentIndex={currentIndex}
+            nextSlide={nextSlide}
+            prevSlide={prevSlide}
+            treatments={uniqueCategories}
+          />
+        </div>
+        <h2 className={classes.title}>Treatment Types</h2>
+        <div className={classes.tabButtons}>
+          {uniqueTags.reverse().map((tag, index) => {
+            return (
+              <button
+                key={index + 1}
+                onClick={() => setActiveTab(`tab${index}`)}
+                className={activeTab === `tab${index}` ? classes.active : ""}
+              >
+                {tag}
+              </button>
+            );
+          })}
+        </div>
+        <div className={classes.tabContent}>
+          {uniqueTags.map((tag, index) => {
+            return (
+              activeTab === `tab${index}` && (
+                <div>
+                  <ul className={classes.treatmentList}>
+                    {tabsTreatments
+                      .filter((tabTreatment) => tabTreatment.tag === tag)
+                      .reverse()
+                      .map((treatment, index) => {
+                        return (
+                          <li
+                            key={index}
+                            className={
+                              openIndex === index
+                                ? classes.isOpen
+                                : classes.isClosed
+                            }
                           >
-                            {treatment.title}
-                            <span className={classes.arrowHolder}>
-                              <FaAngleDown className={classes.arrow} />
-                            </span>
-                          </h3>
-                          <div
-                            className={classes.contentHoder}
-                            dangerouslySetInnerHTML={{
-                              __html: treatment.content,
-                            }}
-                          />
-                        </li>
-                      );
-                    })}
-                </ul>
-              </div>
-            )
-          );
-        })}
+                            <h3
+                              className={classes.treatmentTitle}
+                              onClick={() => toggleAccordion(index)}
+                            >
+                              {treatment.title}
+                              <span className={classes.arrowHolder}>
+                                <FaAngleDown className={classes.arrow} />
+                              </span>
+                            </h3>
+                            <div
+                              className={classes.contentHoder}
+                              dangerouslySetInnerHTML={{
+                                __html: treatment.content,
+                              }}
+                            />
+                          </li>
+                        );
+                      })}
+                  </ul>
+                </div>
+              )
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </Fragment>
   );
 }
 

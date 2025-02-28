@@ -1,0 +1,20 @@
+.link {
+  text-decoration: none;
+  color: #fff;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 29.33px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease-in-out;
+
+  img {
+    margin: 3px 15px -3px 0;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}

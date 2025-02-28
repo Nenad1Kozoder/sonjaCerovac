@@ -31,6 +31,7 @@ function About({ data }) {
             isBlue={true}
             isRight={index === 1 ? true : false}
             title={section.title}
+            isHome={index === 0 ? true : false}
           >
             <TextComponent
               title={section.title}

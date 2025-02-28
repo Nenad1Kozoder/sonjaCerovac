@@ -10,6 +10,7 @@
 
   &.isHome {
     padding: 120px 40px 50px;
+    min-height: 574px;
   }
   &.isImgSmall {
     .SectionImage {
@@ -90,6 +91,11 @@
           rgba(36, 36, 36, 0) 100%
         );
       }
+    }
+  }
+  &.isGreen {
+    &::after {
+      background: linear-gradient(90deg, #39a9a0 0%, rgba(20, 42, 53, 0) 100%);
     }
   }
 

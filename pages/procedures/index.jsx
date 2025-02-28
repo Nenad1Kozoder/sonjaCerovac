@@ -29,6 +29,7 @@ function Procedures({ data }) {
       <Section
         imgUrl={featuredImage.node.sourceUrl}
         title={topSection.topTitle}
+        isHome={true}
       >
         <TextComponent
           title={topSection.topTitle}

@@ -1,3 +1,4 @@
+import BackButton from "./BackButton";
 import Button from "./Button";
 import classes from "./TextComponent.module.scss";
 
@@ -8,6 +9,7 @@ function TextComponent({
   isRight,
   isCenter,
   isWhiteTitle,
+  hasBackBtn,
   button,
 }) {
   const customClasses = [
@@ -21,6 +23,7 @@ function TextComponent({
 
   return (
     <div className={customClasses}>
+      {hasBackBtn && <BackButton />}
       {suptitle && <h3>{suptitle}</h3>}
       {title && <h2>{title}</h2>}
       {description && (
