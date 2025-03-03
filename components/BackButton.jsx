@@ -25,7 +25,7 @@ const BackButton = () => {
 
   return (
     <Link className={classes.link} href={backUrl}>
-      <Image width={17} height={21} src={arrow} />
+      <Image width={17} height={21} src={arrow} alt="arrow" />
       {linkTitle}
     </Link>
   );

@@ -1,9 +1,33 @@
-.conntentHolder {
+.contentHolder {
+  --button-bg: #39a9a0;
+  --active-button-bg: #297f79;
+  --gradient: linear-gradient(180deg, #288980 0%, #36aaa1 100%);
   display: grid;
   grid-template-columns: 236px 1fr;
   gap: 24px 25px;
   max-width: 1221px;
   margin: 45px auto 33px;
+
+  &.aestheticsurgery {
+    --button-bg: #39a9a0;
+    --active-button-bg: #297f79;
+    --gradient: linear-gradient(180deg, #288980 0%, #36aaa1 100%);
+  }
+  &.handwristsurgery {
+    --button-bg: #9bccce;
+    --active-button-bg: #729495;
+    --gradient: linear-gradient(180deg, #6ba4a7 0%, #8fc2c4 100%);
+  }
+  &.reconstructivesurgery {
+    --button-bg: #55a486;
+    --active-button-bg: #407d66;
+    --gradient: linear-gradient(180deg, #4b8d75 0%, #56a586 100%);
+  }
+  &.whattoexpect {
+    --button-bg: #3b7b9b;
+    --active-button-bg: #285a73;
+    --gradient: linear-gradient(180deg, #285a73 0%, #3b7b9b 100%);
+  }
 }
 
 .title {
@@ -24,7 +48,7 @@
     line-height: 26.67px;
     text-align: center;
     color: #fff;
-    background: #39a9a0;
+    background: var(--button-bg);
     border-radius: 16px;
     margin-bottom: 11px;
     padding: 13px 43px;
@@ -37,7 +61,7 @@
 
     &.active,
     &:hover {
-      background: #297f79;
+      background: var(--active-button-bg);
     }
   }
 }
@@ -47,7 +71,7 @@
   margin: 0;
 
   li {
-    background: linear-gradient(180deg, #288980 0%, #36aaa1 100%);
+    background: var(--gradient);
     border-radius: 28px;
     color: #fff;
     margin-bottom: 17px;

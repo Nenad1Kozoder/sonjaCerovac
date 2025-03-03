@@ -27,7 +27,7 @@ function Page({ page, treatments }) {
         ? treatment.categories.edges[0].node.name
         : null;
     const category2 =
-      treatment.categories.edges.length > 0
+      treatment.categories.edges.length > 1
         ? treatment.categories.edges[1].node.name
         : null;
 
@@ -36,7 +36,7 @@ function Page({ page, treatments }) {
         ? treatment.categories.edges[0].node.slug
         : null;
     const categorySlug2 =
-      treatment.categories.edges.length > 0
+      treatment.categories.edges.length > 1
         ? treatment.categories.edges[1].node.slug
         : null;
 
@@ -103,13 +103,15 @@ function Page({ page, treatments }) {
         return updatedTreatment;
       });
   };
-
   const pageTreatments = filterByCategorySlug(page.slug);
-  const uniqueCategories = [
+  console.log(pageTreatments);
+  const uniqueCategories = pageTreatments[0].category && [
     ...new Set(pageTreatments.map((treatment) => treatment.category)),
   ];
-  const tabsTreatments = pageTreatments.filter((trtmnnts) =>
-    trtmnnts.category.includes(uniqueCategories[currentIndex])
+  const tabsTreatments = pageTreatments.filter((trtmnts) =>
+    trtmnts.category
+      ? trtmnts.category.includes(uniqueCategories[currentIndex])
+      : trtmnts
   );
   const uniqueTags = [
     ...new Set(tabsTreatments.map((treatment) => treatment.tag)),
@@ -126,6 +128,8 @@ function Page({ page, treatments }) {
       prevIndex === uniqueCategories.length - 1 ? 0 : prevIndex + 1
     );
   };
+  const colorClass = page.slug.replaceAll("-", "");
+  console.log(colorClass);
 
   return (
     <Fragment>
@@ -133,7 +137,7 @@ function Page({ page, treatments }) {
         <Section
           imgUrl={page.featuredImage.node.sourceUrl}
           title={page.title}
-          customClass="isGreen"
+          customClass={colorClass}
           isHome={true}
         >
           <TextComponent
@@ -144,16 +148,22 @@ function Page({ page, treatments }) {
           />
         </Section>
       )}
-      <div className={classes.conntentHolder}>
-        <div className={classes.filterTags}>
-          <TreatmentSlider
-            currentIndex={currentIndex}
-            nextSlide={nextSlide}
-            prevSlide={prevSlide}
-            treatments={uniqueCategories}
-          />
-        </div>
-        <h2 className={classes.title}>Treatment Types</h2>
+      <div className={`${classes.contentHolder} ${classes[colorClass]}`}>
+        {uniqueCategories ? (
+          <Fragment>
+            <div className={classes.filterTags}>
+              <TreatmentSlider
+                currentIndex={currentIndex}
+                nextSlide={nextSlide}
+                prevSlide={prevSlide}
+                treatments={uniqueCategories}
+              />
+            </div>
+            <h2 className={classes.title}>Treatment Types</h2>
+          </Fragment>
+        ) : (
+          ""
+        )}
         <div className={classes.tabButtons}>
           {uniqueTags.reverse().map((tag, index) => {
             return (
@@ -171,7 +181,7 @@ function Page({ page, treatments }) {
           {uniqueTags.map((tag, index) => {
             return (
               activeTab === `tab${index}` && (
-                <div>
+                <div key={index + 1}>
                   <ul className={classes.treatmentList}>
                     {tabsTreatments
                       .filter((tabTreatment) => tabTreatment.tag === tag)
@@ -215,7 +225,7 @@ function Page({ page, treatments }) {
   );
 }
 
-export async function getStaticPaths() {
+export async function getServerSidePaths() {
   try {
     const { data } = await client.query({
       query: GET_ALL_PAGES_SLUGS,
@@ -235,9 +245,8 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
   try {
-    // Paralelno izvršavanje upita kako bi ubrzali dohvat podataka
     const [pageData, treatmentsData] = await Promise.all([
       client.query({
         query: GET_PAGE_BY_SLUG,
@@ -259,7 +268,7 @@ export async function getStaticProps({ params }) {
     return {
       props: {
         page: null,
-        treatments: null, // Ispravljeno ime
+        treatments: null,
       },
     };
   }

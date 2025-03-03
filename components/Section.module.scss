@@ -64,7 +64,7 @@
   &::after {
     content: "";
     position: absolute;
-    width: 100%;
+    width: 60%;
     height: 100%;
     top: 0;
     left: 0;
@@ -85,6 +85,8 @@
     }
     &.isRight {
       &::after {
+        left: auto;
+        right: 0;
         background: linear-gradient(
           270deg,
           #3b7b9b 22%,
@@ -93,13 +95,31 @@
       }
     }
   }
-  &.isGreen {
+  &.aestheticsurgery {
     &::after {
       background: linear-gradient(90deg, #39a9a0 0%, rgba(20, 42, 53, 0) 100%);
     }
   }
 
+  &.handwristsurgery {
+    &::after {
+      background: linear-gradient(90deg, #9bccce 0%, rgba(20, 42, 53, 0) 100%);
+    }
+  }
+
+  &.reconstructivesurgery {
+    &::after {
+      background: linear-gradient(90deg, #529f82 0%, rgba(20, 42, 53, 0) 100%);
+    }
+  }
+  &.whattoexpect {
+    &::after {
+      background: linear-gradient(90deg, #3b7b9b 0%, rgba(20, 42, 53, 0) 100%);
+    }
+  }
+
   &.isGreen_1 {
+    width: 100%;
     background: linear-gradient(180deg, #2a8d84 0%, #36a9a0 100%);
     [class*="labelHolder"] {
       color: #36a9a0;
@@ -107,6 +127,7 @@
   }
 
   &.isGreen_2 {
+    width: 100%;
     background: linear-gradient(180deg, #6ca3a7 0%, #96c8ca 100%);
     [class*="labelHolder"] {
       color: #95c7c9;
@@ -114,6 +135,7 @@
   }
 
   &.isGreen_3 {
+    width: 100%;
     background: linear-gradient(180deg, #417f68 0%, #55a585 100%);
     [class*="labelHolder"] {
       color: #55a485;

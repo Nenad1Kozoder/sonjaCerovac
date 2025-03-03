@@ -8,7 +8,7 @@ const menuItems = [
   { label: "Home", path: "/" },
   { label: "About", path: "/about" },
   { label: "Procedures", path: "/procedures" },
-  { label: "What To Expect", path: "/what-to-expect" },
+  { label: "What To Expect", path: "/procedures/what-to-expect" },
   { label: "Contact Me", path: "/contact-me" },
 ];
 
