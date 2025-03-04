@@ -2,10 +2,11 @@ import { gql } from "@apollo/client";
 
 export const GET_TREATMENTS = gql`
   query GetTreatments {
-    treatments {
+    treatments(first: 100) {
       nodes {
         title
         content
+        menuOrder
         categories {
           edges {
             node {

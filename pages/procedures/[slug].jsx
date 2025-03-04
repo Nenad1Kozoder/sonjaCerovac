@@ -9,12 +9,14 @@ import { FaAngleDown } from "react-icons/fa6";
 import classes from "./[slug].module.scss";
 import Section from "@/components/Section";
 import TextComponent from "@/components/TextComponent";
+import { GET_TAGS } from "@/queries/getTags";
 
-function Page({ page, treatments }) {
+function Page({ page, treatments, tags }) {
   const [activeTab, setActiveTab] = useState("tab0");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [openIndex, setOpenIndex] = useState(0);
 
+  console.log("treatments: ", treatments);
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
@@ -40,15 +42,16 @@ function Page({ page, treatments }) {
         ? treatment.categories.edges[1].node.slug
         : null;
 
-    const tag =
+    const tags =
       treatment.tags.edges.length > 0
-        ? treatment.tags.edges[0].node.name
-        : null;
+        ? treatment.tags.edges.map((edge) => edge.node.name)
+        : [];
 
-    const tagSlug =
+    const tagSlugs =
       treatment.tags.edges.length > 0
-        ? treatment.tags.edges[0].node.slug
-        : null;
+        ? treatment.tags.edges.map((edge) => edge.node.slug)
+        : [];
+    const menuOrder = treatment.menuOrder ? treatment.menuOrder : null;
 
     return {
       title: treatment.title,
@@ -57,8 +60,9 @@ function Page({ page, treatments }) {
       category2,
       categorySlug1,
       categorySlug2,
-      tag,
-      tagSlug,
+      tags,
+      tagSlugs,
+      menuOrder,
     };
   });
 
@@ -67,6 +71,7 @@ function Page({ page, treatments }) {
       .filter((treatment) =>
         [treatment.categorySlug1, treatment.categorySlug2].includes(catSlug)
       )
+      .sort((a, b) => b.menuOrder - a.menuOrder)
       .map((treatment) => {
         const updatedTreatment = { ...treatment };
         const categories = [
@@ -104,17 +109,19 @@ function Page({ page, treatments }) {
       });
   };
   const pageTreatments = filterByCategorySlug(page.slug);
-  console.log(pageTreatments);
+  console.log("pageTreatments: ", pageTreatments);
   const uniqueCategories = pageTreatments[0].category && [
     ...new Set(pageTreatments.map((treatment) => treatment.category)),
   ];
-  const tabsTreatments = pageTreatments.filter((trtmnts) =>
-    trtmnts.category
-      ? trtmnts.category.includes(uniqueCategories[currentIndex])
-      : trtmnts
+  const tabsTreatments = pageTreatments.filter((treatment) =>
+    treatment.category
+      ? treatment.category.includes(uniqueCategories[currentIndex])
+      : treatment
   );
   const uniqueTags = [
-    ...new Set(tabsTreatments.map((treatment) => treatment.tag)),
+    ...new Set(
+      tabsTreatments.flatMap((treatment) => treatment.tags.map((tag) => tag))
+    ),
   ];
 
   const prevSlide = () => {
@@ -129,7 +136,9 @@ function Page({ page, treatments }) {
     );
   };
   const colorClass = page.slug.replaceAll("-", "");
-  console.log(colorClass);
+  const tagNames = tags.map((tag) => tag.name);
+
+  uniqueTags.sort((a, b) => tagNames.indexOf(a) - tagNames.indexOf(b));
 
   return (
     <Fragment>
@@ -165,7 +174,7 @@ function Page({ page, treatments }) {
           ""
         )}
         <div className={classes.tabButtons}>
-          {uniqueTags.reverse().map((tag, index) => {
+          {uniqueTags.map((tag, index) => {
             return (
               <button
                 key={index + 1}
@@ -184,7 +193,7 @@ function Page({ page, treatments }) {
                 <div key={index + 1}>
                   <ul className={classes.treatmentList}>
                     {tabsTreatments
-                      .filter((tabTreatment) => tabTreatment.tag === tag)
+                      .filter((tabTreatment) => tabTreatment.tags.includes(tag))
                       .reverse()
                       .map((treatment, index) => {
                         return (
@@ -247,7 +256,7 @@ export async function getServerSidePaths() {
 
 export async function getServerSideProps({ params }) {
   try {
-    const [pageData, treatmentsData] = await Promise.all([
+    const [pageData, treatmentsData, tagsData] = await Promise.all([
       client.query({
         query: GET_PAGE_BY_SLUG,
         variables: { slug: params.slug },
@@ -255,12 +264,16 @@ export async function getServerSideProps({ params }) {
       client.query({
         query: GET_TREATMENTS,
       }),
+      client.query({
+        query: GET_TAGS,
+      }),
     ]);
 
     return {
       props: {
         page: pageData.data.pageBy,
-        treatments: treatmentsData.data, // Ispravljeno ime
+        treatments: treatmentsData.data,
+        tags: tagsData.data.tags.nodes,
       },
     };
   } catch (error) {
