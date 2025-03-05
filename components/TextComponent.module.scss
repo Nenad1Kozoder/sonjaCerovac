@@ -13,6 +13,15 @@
     }
   }
 
+  &.isBottom {
+    justify-content: flex-end;
+    max-width: 480px;
+
+    h2 {
+      line-height: 48px !important;
+    }
+  }
+
   &.textHolderCenter {
     text-align: center;
     align-items: center;

@@ -1,6 +1,11 @@
+import { Fragment } from "react";
 import BackButton from "./BackButton";
 import Button from "./Button";
 import classes from "./TextComponent.module.scss";
+import Link from "next/link";
+import arrowLeft from "../public/arrow_left_white.svg";
+import arrowRight from "../public/arrow_right_white.svg";
+import Image from "next/image";
 
 function TextComponent({
   title,
@@ -8,21 +13,47 @@ function TextComponent({
   description,
   isRight,
   isCenter,
+  isBottom,
   isWhiteTitle,
   hasBackBtn,
   button,
+  navigation,
 }) {
   const customClasses = [
     classes.textHolder,
     isRight && classes.textHolderRight,
     isCenter && classes.textHolderCenter,
     isWhiteTitle && classes.isWhiteTitle,
+    isBottom && classes.isBottom,
   ]
     .filter(Boolean)
     .join(" ");
 
   return (
     <div className={customClasses}>
+      {/* {navigation ? ():(null)} */}
+
+      {navigation ? (
+        <Fragment>
+          <Link
+            className={classes.arrowLeft}
+            href={`/gallery/${navigation[0].slug}`}
+            passHref
+          >
+            <Image width={17} height={21} src={arrowLeft} alt="arrowLeft" />
+          </Link>
+          <Link
+            className={classes.arrowRight}
+            href={`/gallery/${navigation[1].slug}`}
+            passHref
+          >
+            <Image width={17} height={21} src={arrowRight} alt="arrowRight" />
+          </Link>
+        </Fragment>
+      ) : (
+        ""
+      )}
+
       {hasBackBtn && <BackButton />}
       {suptitle && <h3>{suptitle}</h3>}
       {title && <h2>{title}</h2>}

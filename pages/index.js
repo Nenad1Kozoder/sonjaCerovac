@@ -18,7 +18,7 @@ export default function Home({ data }) {
     clinicalExpertiseSection,
     contactHome,
     testimonials,
-    galerySection,
+    gallerySection,
     references,
   } = data;
 
@@ -72,7 +72,7 @@ export default function Home({ data }) {
           description={historySection.description}
         />
       </Section>
-      <Section isGrid={true}>
+      <Section isGrid={true} isWhite={true}>
         <ContactHomeSection data={contactHome} />
       </Section>
       <Section
@@ -82,12 +82,12 @@ export default function Home({ data }) {
         <Testimonials testimonials={testimonials} />
       </Section>
       <Section
-        imgUrl={galerySection.galleryBackgroundImage.node.sourceUrl}
-        title={galerySection.gellerySectionTitle}
+        imgUrl={gallerySection.galleryBackgroundImage.node.sourceUrl}
+        title={gallerySection.gellerySectionTitle}
         noOverlay={true}
         isRight={true}
       >
-        <GalleryHome data={galerySection} />
+        <GalleryHome data={gallerySection} />
       </Section>
       <Section isClean={true}>
         <References references={references.references} />
@@ -102,7 +102,7 @@ export async function getStaticProps() {
   });
 
   const home =
-    data.pages.nodes.find((page) => page.isFrontPage === true) || null;
+    data.pages && data.pages.nodes.find((page) => page.isFrontPage === true);
 
   return {
     props: {

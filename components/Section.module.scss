@@ -47,8 +47,12 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 50px;
     padding: 93px 101px 60px;
+  }
+
+  &.whiteSection {
     background: #f8f8f8;
     box-shadow: none;
+    padding: 49px 96px;
 
     &::after {
       display: none;
@@ -112,6 +116,15 @@
       background: linear-gradient(90deg, #529f82 0%, rgba(20, 42, 53, 0) 100%);
     }
   }
+
+  &.isGallery {
+    min-height: 575px;
+
+    &::after {
+      background: linear-gradient(90deg, #3ba299 0%, rgba(20, 42, 53, 0) 100%);
+    }
+  }
+
   &.whattoexpect {
     &::after {
       background: linear-gradient(90deg, #3b7b9b 0%, rgba(20, 42, 53, 0) 100%);
@@ -145,4 +158,30 @@
 
 .SectionImage {
   object-fit: cover;
+}
+
+.arrowLeft {
+  position: absolute;
+  top: 50%;
+  left: 82px;
+  transform: translateY(-50%);
+  z-index: 5;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    transform: translateY(-50%) scale(1.3);
+  }
+}
+
+.arrowRight {
+  position: absolute;
+  top: 50%;
+  right: 82px;
+  transform: translateY(-50%);
+  z-index: 5;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    transform: translateY(-50%) scale(1.3);
+  }
 }

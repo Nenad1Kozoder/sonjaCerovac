@@ -103,12 +103,12 @@ export const GET_HOME_PAGE = gql`
             }
           }
         }
-        galerySection {
+        gallerySection {
           gellerySectionTitle
-          selectGalerys {
+          selectGalleries {
             edges {
               node {
-                ... on Galery {
+                ... on Gallery {
                   uri
                   title
                 }

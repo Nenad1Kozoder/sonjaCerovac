@@ -1,0 +1,16 @@
+.list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 38px;
+  width: 100%;
+
+  li {
+    overflow: hidden;
+    border-radius: 28px;
+  }
+  img {
+    width: 100%;
+    cursor: "pointer";
+  }
+}

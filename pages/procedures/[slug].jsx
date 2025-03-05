@@ -2,7 +2,7 @@ import client from "@/lib/apolloClient";
 import { GET_PAGE_BY_SLUG } from "@/queries/getPageBySlug";
 import { GET_ALL_PAGES_SLUGS } from "@/queries/getAllPagesSlugs";
 import { GET_TREATMENTS } from "@/queries/getTreatments";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useRef } from "react";
 import TreatmentSlider from "@/components/TreatmentSlider";
 import { FaAngleDown } from "react-icons/fa6";
 
@@ -16,10 +16,22 @@ function Page({ page, treatments, tags }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [openIndex, setOpenIndex] = useState(0);
 
-  console.log("treatments: ", treatments);
+  const targetRef = useRef(null);
+
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+
+  function handleTab(activeTab) {
+    setActiveTab(activeTab);
+    setOpenIndex(0);
+
+    if (targetRef.current) {
+      const elementPosition =
+        targetRef.current.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: elementPosition - 40, behavior: "smooth" });
+    }
+  }
 
   if (!page) return <div>Page not found</div>;
 
@@ -109,15 +121,17 @@ function Page({ page, treatments, tags }) {
       });
   };
   const pageTreatments = filterByCategorySlug(page.slug);
-  console.log("pageTreatments: ", pageTreatments);
+
   const uniqueCategories = pageTreatments[0].category && [
     ...new Set(pageTreatments.map((treatment) => treatment.category)),
   ];
+
   const tabsTreatments = pageTreatments.filter((treatment) =>
     treatment.category
       ? treatment.category.includes(uniqueCategories[currentIndex])
       : treatment
   );
+
   const uniqueTags = [
     ...new Set(
       tabsTreatments.flatMap((treatment) => treatment.tags.map((tag) => tag))
@@ -135,7 +149,9 @@ function Page({ page, treatments, tags }) {
       prevIndex === uniqueCategories.length - 1 ? 0 : prevIndex + 1
     );
   };
+
   const colorClass = page.slug.replaceAll("-", "");
+
   const tagNames = tags.map((tag) => tag.name);
 
   uniqueTags.sort((a, b) => tagNames.indexOf(a) - tagNames.indexOf(b));
@@ -157,7 +173,10 @@ function Page({ page, treatments, tags }) {
           />
         </Section>
       )}
-      <div className={`${classes.contentHolder} ${classes[colorClass]}`}>
+      <div
+        ref={targetRef}
+        className={`${classes.contentHolder} ${classes[colorClass]}`}
+      >
         {uniqueCategories ? (
           <Fragment>
             <div className={classes.filterTags}>
@@ -178,7 +197,7 @@ function Page({ page, treatments, tags }) {
             return (
               <button
                 key={index + 1}
-                onClick={() => setActiveTab(`tab${index}`)}
+                onClick={() => handleTab(`tab${index}`)}
                 className={activeTab === `tab${index}` ? classes.active : ""}
               >
                 {tag}
@@ -188,41 +207,48 @@ function Page({ page, treatments, tags }) {
         </div>
         <div className={classes.tabContent}>
           {uniqueTags.map((tag, index) => {
+            const filteredTabTreatmens = tabsTreatments
+              .filter((tabTreatment) => tabTreatment.tags.includes(tag))
+              .reverse();
             return (
               activeTab === `tab${index}` && (
                 <div key={index + 1}>
                   <ul className={classes.treatmentList}>
-                    {tabsTreatments
-                      .filter((tabTreatment) => tabTreatment.tags.includes(tag))
-                      .reverse()
-                      .map((treatment, index) => {
-                        return (
-                          <li
-                            key={index}
-                            className={
-                              openIndex === index
-                                ? classes.isOpen
-                                : classes.isClosed
+                    {filteredTabTreatmens.map((treatment, index) => {
+                      return (
+                        <li
+                          key={index}
+                          className={
+                            openIndex === index
+                              ? classes.isOpen
+                              : classes.isClosed
+                          }
+                        >
+                          <h3
+                            className={classes.treatmentTitle}
+                            onClick={() =>
+                              filteredTabTreatmens.length > 1 &&
+                              toggleAccordion(index)
                             }
                           >
-                            <h3
-                              className={classes.treatmentTitle}
-                              onClick={() => toggleAccordion(index)}
-                            >
-                              {treatment.title}
+                            {treatment.title}
+                            {filteredTabTreatmens.length > 1 ? (
                               <span className={classes.arrowHolder}>
                                 <FaAngleDown className={classes.arrow} />
                               </span>
-                            </h3>
-                            <div
-                              className={classes.contentHoder}
-                              dangerouslySetInnerHTML={{
-                                __html: treatment.content,
-                              }}
-                            />
-                          </li>
-                        );
-                      })}
+                            ) : (
+                              ""
+                            )}
+                          </h3>
+                          <div
+                            className={classes.contentHoder}
+                            dangerouslySetInnerHTML={{
+                              __html: treatment.content,
+                            }}
+                          />
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               )

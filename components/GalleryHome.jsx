@@ -3,14 +3,15 @@ import Link from "next/link";
 import classes from "./GalleryHome.module.scss";
 
 function GalleryHome({ data }) {
-  const galeries = data.selectGalerys.edges;
+  const galleries = data.selectGalleries.edges;
+
   return (
     <div className={classes.holder}>
       <Title as="h2" className="whiteLarge">
         {data.gellerySectionTitle}
       </Title>
       <ul className={classes.list}>
-        {galeries.map((gallery, index) => {
+        {galleries.map((gallery, index) => {
           return (
             <li key={index}>
               <Link className={classes.link} href={gallery.node.uri}>
