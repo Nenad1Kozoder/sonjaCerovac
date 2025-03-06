@@ -1,0 +1,76 @@
+.holder {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 36px;
+  color: #3b7b9b;
+  max-width: 1380px;
+  margin: 0 auto 34px;
+
+  > div {
+    background: #f8f8f8;
+    border-radius: 28px;
+  }
+}
+
+.description {
+  padding: 47px 90px;
+
+  h2 {
+    font-weight: 600;
+    font-size: 64px;
+    line-height: 85.33px;
+    color: #3b7b9b;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 29.33px;
+    margin-bottom: 30px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    a {
+      color: #3b7b9b;
+      text-decoration: none;
+      position: relative;
+      font-weight: 700;
+
+      &::after {
+        content: "";
+        height: 2px;
+        width: 0;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background: #3b7b9b;
+        transition: all 0.3s ease-in-out;
+      }
+
+      &:hover {
+        &::after {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 85px 20px;
+
+  p {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: 0%;
+    text-align: center;
+    margin-top: 11px;
+  }
+}

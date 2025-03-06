@@ -7,6 +7,10 @@
   border-top-right-radius: 28px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 64px 206px 216px;
+
+  img {
+    margin-right: 78px;
+  }
 }

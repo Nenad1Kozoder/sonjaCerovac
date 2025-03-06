@@ -83,6 +83,15 @@
       background: linear-gradient(270deg, #8a8988 0%, rgba(77, 77, 77, 0) 100%);
     }
   }
+
+  &.isGallery {
+    min-height: 575px;
+
+    &::after {
+      background: linear-gradient(90deg, #3ba299 0%, rgba(20, 42, 53, 0) 100%);
+    }
+  }
+
   &.isBlueOverlay {
     &::after {
       background: linear-gradient(90deg, #3b7b9b 0%, rgba(20, 42, 53, 0) 100%);
@@ -114,14 +123,6 @@
   &.reconstructivesurgery {
     &::after {
       background: linear-gradient(90deg, #529f82 0%, rgba(20, 42, 53, 0) 100%);
-    }
-  }
-
-  &.isGallery {
-    min-height: 575px;
-
-    &::after {
-      background: linear-gradient(90deg, #3ba299 0%, rgba(20, 42, 53, 0) 100%);
     }
   }
 
