@@ -23,7 +23,7 @@ function Procedures({ data }) {
       },
     };
   });
-  console.log(groupSectionsClean);
+
   return (
     <Fragment>
       <Section

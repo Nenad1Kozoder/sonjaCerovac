@@ -1,12 +1,14 @@
-.contentHolder {
+.contentWraper {
   --button-bg: #39a9a0;
   --active-button-bg: #297f79;
   --gradient: linear-gradient(180deg, #288980 0%, #36aaa1 100%);
   display: grid;
   grid-template-columns: 236px 1fr;
+  grid-template-rows: max-content;
   gap: 24px 25px;
   max-width: 1221px;
   margin: 45px auto 33px;
+  min-height: 100vh;
 
   &.aestheticsurgery {
     --button-bg: #39a9a0;

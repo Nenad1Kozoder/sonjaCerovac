@@ -7,11 +7,11 @@ import Image from "next/image";
 import classes from "./contact-me.module.scss";
 
 function ContactMe({ data }) {
-  console.log(data);
   const { featuredImage, title: pageTitle, contactInformation } = data;
 
   const { title, description, qrDescription, hospitalLogo, qrCode } =
     contactInformation;
+
   return (
     <Fragment>
       <Section

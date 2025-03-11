@@ -1,9 +1,10 @@
 import { FaArrowUpLong } from "react-icons/fa6";
+import Link from "next/link";
 import classes from "./Button.module.scss";
 
 function Button({ button, variant, noArrow, isExternal }) {
   return (
-    <a
+    <Link
       className={`${classes.button} ${
         variant === "blue" ? classes.blue : classes.white
       } ${noArrow ? classes.noArrow : ""}`}
@@ -20,7 +21,7 @@ function Button({ button, variant, noArrow, isExternal }) {
       ) : (
         ""
       )}
-    </a>
+    </Link>
   );
 }
 
