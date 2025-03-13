@@ -1,11 +1,18 @@
-@use "./breakpoints.scss";
+@use "./breakpoints.scss" as *;
 
-html,
 body {
   padding: 0;
   margin: 0;
   background: #fff;
   scroll-behavior: smooth;
+
+  @include tablet {
+    padding: 0 20px;
+  }
+
+  @include mobile {
+    padding: 0 13px;
+  }
 }
 
 * {

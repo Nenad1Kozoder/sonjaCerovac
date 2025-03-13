@@ -18,6 +18,7 @@ function TextComponent({
   hasBackBtn,
   button,
   navigation,
+  titleDecoration,
 }) {
   const customClasses = [
     classes.textHolder,
@@ -29,10 +30,14 @@ function TextComponent({
     .filter(Boolean)
     .join(" ");
 
+  if (titleDecoration) {
+    console.log("yes");
+    title.replace(/ /g, titleDecoration);
+    console.log(title.replace(/ /g, titleDecoration));
+  }
+
   return (
     <div className={customClasses}>
-      {/* {navigation ? ():(null)} */}
-
       {navigation ? (
         <Fragment>
           <Link
@@ -56,7 +61,15 @@ function TextComponent({
 
       {hasBackBtn && <BackButton />}
       {suptitle && <h3>{suptitle}</h3>}
-      {title && <h2>{title}</h2>}
+      {title && (
+        <h2
+          dangerouslySetInnerHTML={{
+            __html: titleDecoration
+              ? title.replace(/ /g, titleDecoration)
+              : title,
+          }}
+        ></h2>
+      )}
       {description && (
         <div
           className={classes.description}

@@ -1,10 +1,19 @@
+@use "../styles/breakpoints.scss" as *;
+
 .list {
   margin: 0;
   list-style: none;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 55px;
-  flex-wrap: wrap;
   padding: 31px 0 25px;
+  row-gap: 20px;
+
+  @include mobile {
+    flex-wrap: wrap;
+  }
+
+  img {
+    max-width: 100%;
+  }
 }

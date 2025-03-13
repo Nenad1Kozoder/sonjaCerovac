@@ -1,3 +1,5 @@
+@use "../styles/breakpoints.scss" as *;
+
 .footer {
   max-width: 1382px;
   margin: 0 auto;
@@ -9,6 +11,11 @@
   align-items: center;
   justify-content: flex-start;
   padding: 64px 206px 216px;
+
+  @include tablet {
+    padding: 64px 80px 216px;
+    justify-content: space-between;
+  }
 
   img {
     margin-right: 78px;

@@ -52,6 +52,7 @@ export default function Home({ data }) {
       >
         <TextComponent
           title={homeTopSection.title}
+          titleDecoration="<span>○</span>"
           description={content}
           suptitle={homeTopSection.pretitle}
           isRight={true}
