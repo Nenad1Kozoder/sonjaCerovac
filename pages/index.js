@@ -71,6 +71,7 @@ export default function Home({ data }) {
         <TextComponent
           title={historySection.titleHistory}
           description={historySection.description}
+          isWhiteTitle={true}
         />
       </Section>
       <Section isGrid={true} isWhite={true}>
