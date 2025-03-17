@@ -4,15 +4,23 @@ import classes from "./Header.module.scss";
 import NavMenu from "./NavMenu";
 import Link from "next/link";
 
-function Header(url) {
+const menuItems = [
+  { label: "Home", path: "/" },
+  { label: "About", path: "/about" },
+  { label: "Procedures", path: "/procedures" },
+  { label: "What To Expect", path: "/procedures/what-to-expect" },
+  { label: "Contact Me", path: "/contact-me" },
+];
+
+function Header() {
   return (
     <header className={classes.header}>
-      <div>
+      <div className={classes.linkHolder}>
         <Link href="/">
-          <Image src={logo} alt="logo" />
+          <Image width={0} height={0} sizes="100vw" src={logo} alt="logo" />
         </Link>
       </div>
-      <NavMenu />
+      <NavMenu menuItems={menuItems} isHeader={true} />
     </header>
   );
 }

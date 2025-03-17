@@ -13,11 +13,19 @@
   padding: 64px 206px 216px;
 
   @include tablet {
-    padding: 64px 80px 216px;
+    padding: 64px 60px 216px;
     justify-content: space-between;
+  }
+  @include mobile {
+    padding: 33px 31px 35px;
   }
 
   img {
     margin-right: 78px;
+
+    @include mobile {
+      margin-right: 32px;
+      width: 40px;
+    }
   }
 }

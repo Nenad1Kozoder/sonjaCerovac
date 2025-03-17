@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
+import classes from "./MapComponent.module.scss";
 
 const customIcon = new L.Icon({
   iconUrl: markerIcon.src,
@@ -25,14 +26,7 @@ const MapComponent = ({ data }) => {
   if (!position) return <p>Učitavanje mape...</p>;
 
   return (
-    <div
-      style={{
-        height: "500px",
-        width: "100%",
-        borderRadius: "28px",
-        overflow: "hidden",
-      }}
-    >
+    <div className={classes.mapHolder}>
       <MapContainer center={position} zoom={13} style={{ height: "100%" }}>
         <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
         <Marker position={position} icon={customIcon}>

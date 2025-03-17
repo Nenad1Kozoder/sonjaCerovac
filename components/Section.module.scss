@@ -1,3 +1,5 @@
+@use "../styles/breakpoints.scss" as *;
+
 .section {
   position: relative;
   padding: 52px 40px 78px;
@@ -49,12 +51,21 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 50px;
     padding: 93px 101px 60px;
+
+    @include mobile-narrow {
+      grid-template-columns: 1fr;
+    }
   }
 
   &.whiteSection {
     background: #f8f8f8;
     box-shadow: none;
     padding: 49px 96px;
+
+    @include mobile {
+      padding: 15px 15px 25px;
+      gap: 30px;
+    }
 
     &::after {
       display: none;
@@ -161,6 +172,10 @@
 
 .SectionImage {
   object-fit: cover;
+
+  @include tablet {
+    object-position: 20%;
+  }
 }
 
 .arrowLeft {

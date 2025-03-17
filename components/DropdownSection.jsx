@@ -44,28 +44,31 @@ function DropdownSection({ title, expertises }) {
             }`}
             onClick={() => toggleDropdown(index)}
           >
-            <h4 className={classes.itemTitle}>
-              {expertise.title}
-              <div className={classes.arrowHolder}>
-                <FaAngleDown className={classes.arrow} />
+            {" "}
+            <div className={classes.contentHolder}>
+              <h4 className={classes.itemTitle}>
+                {expertise.title}
+                <div className={classes.arrowHolder}>
+                  <FaAngleDown className={classes.arrow} />
+                </div>
+              </h4>
+              <div className={classes.descriptionHolder}>
+                <p
+                  className={classes.description}
+                  dangerouslySetInnerHTML={{ __html: expertise.description }}
+                />
+                {expertise.button.links.map((btnLink, idx) =>
+                  btnLink.uri ? (
+                    <Link
+                      className={classes.button}
+                      key={idx}
+                      href={btnLink.uri || "#"}
+                    >
+                      {expertise.button.label}
+                    </Link>
+                  ) : null
+                )}
               </div>
-            </h4>
-            <div className={classes.descriptionHolder}>
-              <p
-                className={classes.description}
-                dangerouslySetInnerHTML={{ __html: expertise.description }}
-              />
-              {expertise.button.links.map((btnLink, idx) =>
-                btnLink.uri ? (
-                  <Link
-                    className={classes.button}
-                    key={idx}
-                    href={btnLink.uri || "#"}
-                  >
-                    {expertise.button.label}
-                  </Link>
-                ) : null
-              )}
             </div>
           </li>
         ))}

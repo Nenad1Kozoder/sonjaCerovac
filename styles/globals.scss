@@ -6,7 +6,7 @@ body {
   background: #fff;
   scroll-behavior: smooth;
 
-  @include tablet {
+  @include desktop {
     padding: 0 20px;
   }
 
