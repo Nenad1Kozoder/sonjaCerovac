@@ -103,6 +103,7 @@
     flex-direction: column;
     padding: 67px 48px;
     transition: all 0.3s ease-in;
+    z-index: 111;
 
     ul {
       list-style: none;
@@ -111,6 +112,7 @@
 
       li,
       li:last-of-type {
+        margin-bottom: 10px;
         a {
           font-weight: 700;
           font-size: 36px;
@@ -124,6 +126,25 @@
           height: auto;
           border-radius: 0;
           line-height: normal;
+          position: relative;
+
+          &:after {
+            content: "";
+            height: 4px;
+            width: 0;
+            background: #36aaa1;
+            position: absolute;
+            transition: all 0.3s ease-in-out;
+            bottom: 0;
+            left: 0;
+          }
+
+          &:hover,
+          &.active {
+            &:after {
+              width: 100%;
+            }
+          }
         }
       }
     }

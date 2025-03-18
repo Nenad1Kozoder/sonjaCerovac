@@ -1,9 +1,16 @@
+@use "../styles/breakpoints.scss" as *;
+
 .greenRegular {
   font-weight: 700;
   font-size: 48px;
   line-height: 64px;
   color: #3b7b9b;
   text-align: center;
+
+  @include mobile {
+    font-size: 36px;
+    line-height: normal;
+  }
 }
 
 .whiteLarge {
@@ -11,6 +18,11 @@
   font-size: 64px;
   line-height: 85.33px;
   color: #f8f8f8;
+
+  @include mobile {
+    font-size: 36px;
+    line-height: normal;
+  }
 }
 
 .whiteSmall {
@@ -18,4 +30,9 @@
   font-size: 24px;
   line-height: 32px;
   color: #f8f8f8;
+
+  @include mobile {
+    font-size: 22px;
+    line-height: normal;
+  }
 }

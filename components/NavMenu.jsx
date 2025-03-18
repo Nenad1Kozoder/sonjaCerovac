@@ -16,18 +16,27 @@ const NavMenu = ({ isHeader, menuItems }) => {
     >
       <div>
         {/* Desktop meni */}
-        <ul className={classes.menu}>
-          {menuItems.map((item, index) => (
-            <li key={index}>
-              <Link
-                href={item.path}
-                className={router.pathname === item.path ? classes.active : ""}
-              >
-                {item.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {
+          <ul className={classes.menu}>
+            {menuItems.map((item, index) => {
+              const isActive =
+                item.path === "/"
+                  ? router.pathname === "/"
+                  : router.pathname.startsWith(item.path);
+
+              return (
+                <li key={index}>
+                  <Link
+                    href={item.path}
+                    className={isActive ? classes.active : ""}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        }
 
         {/* Mobilni/tablet dugme */}
         <button
@@ -52,18 +61,25 @@ const NavMenu = ({ isHeader, menuItems }) => {
             <Image width={0} height={0} sizes="100vw" src={mobMenuX} />
           </button>
           <ul>
-            {menuItems.map((item, index) => (
-              <li>
-                <Link
-                  key={index}
-                  href={item.path}
-                  className={router.pathname === item.path ? "active" : ""}
-                  onClick={() => setIsOpen(false)} // Zatvori meni na klik
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            {menuItems.map((item, index) => {
+              const isActive =
+                item.path === "/"
+                  ? router.pathname === "/"
+                  : router.pathname.startsWith(item.path);
+
+              return (
+                <li>
+                  <Link
+                    key={index}
+                    href={item.path}
+                    className={isActive ? classes.active : ""}
+                    onClick={() => setIsOpen(false)} // Zatvori meni na klik
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}

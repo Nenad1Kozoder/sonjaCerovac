@@ -1,3 +1,5 @@
+@use "../styles/breakpoints.scss" as *;
+
 .section {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -15,6 +17,11 @@
   font-size: 64px;
   line-height: 85.33px;
   color: #3b7b9b;
+
+  @include mobile {
+    font-size: 36px;
+    line-height: normal;
+  }
 }
 
 .addresse {

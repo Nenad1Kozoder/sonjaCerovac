@@ -30,15 +30,17 @@ function ContactMe({ data }) {
         <div className={classes.app}>
           <Image
             src={hospitalLogo.node.sourceUrl}
-            width="216"
-            height="126"
+            width={0}
+            height={0}
+            sizes="100vw"
             alt="logo"
           />
           <Image
             src={qrCode.node.sourceUrl}
-            width="252"
-            height="252"
-            alt="logo"
+            width={0}
+            height={0}
+            sizes="100%"
+            alt="qr-code"
           />
           <p>{qrDescription}</p>
         </div>

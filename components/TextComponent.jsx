@@ -19,6 +19,7 @@ function TextComponent({
   button,
   navigation,
   titleDecoration,
+  isFullWidth,
 }) {
   const customClasses = [
     classes.textHolder,
@@ -26,6 +27,7 @@ function TextComponent({
     isCenter && classes.textHolderCenter,
     isWhiteTitle && classes.isWhiteTitle,
     isBottom && classes.isBottom,
+    isFullWidth && classes.isFullWidth,
   ]
     .filter(Boolean)
     .join(" ");

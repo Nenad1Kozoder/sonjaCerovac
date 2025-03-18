@@ -10,6 +10,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 114px 0 50px;
+  position: relative;
+  z-index: 9999;
 
   @include mobile {
     padding: 32px 35px 32px 40px;

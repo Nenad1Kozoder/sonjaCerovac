@@ -38,12 +38,17 @@ function About({ data }) {
               description={section.description}
               isRight={index === 1 ? true : false}
               isWhiteTitle={true}
+              isFullWidth={index === 0 ? true : false}
             />
           </Section>
         );
       })}
       <Section isClean={true}>
-        <TextComponent description={content} isCenter={true} />
+        <TextComponent
+          description={content}
+          isCenter={true}
+          isFullWidth={true}
+        />
         <Button variant={"blue"} noArrow={true} button={contactMe} />
       </Section>
     </Fragment>

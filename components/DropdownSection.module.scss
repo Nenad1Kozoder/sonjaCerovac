@@ -18,9 +18,14 @@ $tablet-width: calc((100% - 48px) / 2);
     padding: 0 68px;
   }
 
+  @include mobile {
+    padding: 0;
+    margin-bottom: 84px;
+  }
+
   @include mobile-narrow {
     grid-template-columns: 1fr;
-    padding: 0 43px;
+    padding: 0;
   }
 }
 
@@ -29,6 +34,8 @@ $tablet-width: calc((100% - 48px) / 2);
   position: relative;
   min-height: 110px;
   grid-column: span 2;
+  transition: all 0.3s ease-in-out;
+  z-index: 0;
 
   @include mobile-narrow {
     grid-column: 1;
@@ -58,18 +65,30 @@ $tablet-width: calc((100% - 48px) / 2);
     }
   }
 
-  &.expertiseListItemActive,
-  &:hover {
+  &.expertiseListItemActive {
     z-index: 100;
+
     .arrow {
       transform: rotate(180deg);
     }
 
     .descriptionHolder {
       max-height: 1000px;
-      transition-delay: 0.2s;
     }
   }
+
+  @media (hover: hover) {
+    &:hover {
+      .arrow {
+        transform: rotate(180deg);
+      }
+
+      .descriptionHolder {
+        max-height: 1000px;
+      }
+    }
+  }
+
   .contentHolder {
     top: 0;
     position: absolute;

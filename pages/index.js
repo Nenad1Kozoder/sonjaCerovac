@@ -56,6 +56,7 @@ export default function Home({ data }) {
           description={content}
           suptitle={homeTopSection.pretitle}
           isRight={true}
+          isFullWidth={true}
         />
       </Section>
       <Section isClean={true}>
@@ -72,6 +73,7 @@ export default function Home({ data }) {
           title={historySection.titleHistory}
           description={historySection.description}
           isWhiteTitle={true}
+          isFullWidth={true}
         />
       </Section>
       <Section isGrid={true} isWhite={true}>

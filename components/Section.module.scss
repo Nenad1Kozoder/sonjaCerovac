@@ -10,19 +10,40 @@
   margin: 33px auto;
   overflow: hidden;
 
+  @include mobile {
+    padding: 52px 23px 40px;
+  }
+
   &.isHome {
     padding: 120px 40px 50px;
     min-height: 574px;
+
+    @include mobile {
+      padding: 120px 23px 40px;
+    }
   }
+
   &.isImgSmall {
     .SectionImage {
       inset: 0 0 0 auto !important;
       width: auto !important;
+
+      @include mobile {
+        width: 50% !important;
+        height: 40% !important;
+        inset: auto 0 0 auto !important;
+      }
     }
 
     &.isRight {
       .SectionImage {
         inset: 0 auto 0 0 !important;
+
+        @include mobile {
+          height: 30% !important;
+          width: 40% !important;
+          inset: auto auto 0 0 !important;
+        }
       }
     }
 
@@ -87,6 +108,10 @@
     left: 0;
     z-index: 2;
     background: linear-gradient(90deg, #8c8b8b 0%, rgba(78, 78, 78, 0) 100%);
+
+    @include mobile {
+      width: 90%;
+    }
   }
 
   &.isRight {
@@ -99,6 +124,14 @@
 
   &.isGallery {
     min-height: 575px;
+
+    @include mobile {
+      min-height: 90vw;
+
+      .SectionImage {
+        object-position: center;
+      }
+    }
 
     &::after {
       background: linear-gradient(90deg, #3ba299 0%, rgba(20, 42, 53, 0) 100%);
@@ -186,6 +219,10 @@
   z-index: 5;
   transition: all 0.3s ease-in-out;
 
+  @include mobile {
+    left: 33px;
+  }
+
   &:hover {
     transform: translateY(-50%) scale(1.3);
   }
@@ -198,6 +235,10 @@
   transform: translateY(-50%);
   z-index: 5;
   transition: all 0.3s ease-in-out;
+
+  @include mobile {
+    right: 33px;
+  }
 
   &:hover {
     transform: translateY(-50%) scale(1.3);

@@ -36,6 +36,7 @@ function Procedures({ data }) {
           title={topSection.topTitle}
           description={topSection.topDescription}
           isWhiteTitle={true}
+          isFullWidth={true}
         />
       </Section>
       {groupSectionsClean.map((section, index) => {
@@ -59,7 +60,11 @@ function Procedures({ data }) {
         );
       })}
       <Section isClean={true}>
-        <TextComponent description={content} isCenter={true} />
+        <TextComponent
+          description={content}
+          isCenter={true}
+          isFullWidth={true}
+        />
         <Button variant={"blue"} noArrow={true} button={contactMe} />
       </Section>
     </Fragment>
