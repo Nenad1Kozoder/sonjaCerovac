@@ -1,17 +1,27 @@
 import classes from "./TreatmentSlider.module.scss";
-import arrow from "../public/arrowGreen.svg";
-import Image from "next/image";
 
 const TreatmentSlider = ({
   treatments,
   prevSlide,
   nextSlide,
   currentIndex,
+  isGreenBg,
 }) => {
   return (
     <div className={classes.sliderHoder}>
-      <button className={classes.button} onClick={prevSlide}>
-        <Image width={18.5} height={26} src={arrow} alt="arrow" />
+      <button
+        className={`${classes.button} ${isGreenBg && classes.buttonWhite}`}
+        onClick={prevSlide}
+      >
+        <svg
+          width="19"
+          height="26"
+          viewBox="0 0 19 26"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M0 26V0L18.5 11.5L0 26Z" fill="#36A9A0" />
+        </svg>{" "}
       </button>
       <div className={classes.slider}>
         <ul
@@ -25,8 +35,19 @@ const TreatmentSlider = ({
           ))}
         </ul>
       </div>
-      <button className={classes.button} onClick={nextSlide}>
-        <Image width={18.5} height={26} src={arrow} alt="arrow" />
+      <button
+        className={`${classes.button} ${isGreenBg && classes.buttonWhite}`}
+        onClick={nextSlide}
+      >
+        <svg
+          width="19"
+          height="26"
+          viewBox="0 0 19 26"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M0 26V0L18.5 11.5L0 26Z" fill="#36A9A0" />
+        </svg>{" "}
       </button>
     </div>
   );

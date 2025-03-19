@@ -1,14 +1,21 @@
+@use "../styles/breakpoints.scss" as *;
+
 .contentWraper {
   --button-bg: #39a9a0;
   --active-button-bg: #297f79;
   --gradient: linear-gradient(180deg, #288980 0%, #36aaa1 100%);
   display: grid;
   grid-template-columns: 236px 1fr;
-  grid-template-rows: max-content;
+  grid-auto-rows: min-content;
   gap: 24px 25px;
   max-width: 1221px;
   margin: 45px auto 33px;
   min-height: 100vh;
+
+  @include mobile {
+    grid-template-columns: calc(45% - (25px / 2)) calc(55% - (25px / 2));
+    align-items: center;
+  }
 
   &.aestheticsurgery {
     --button-bg: #39a9a0;
@@ -38,11 +45,50 @@
   line-height: 48px;
   text-align: center;
   color: #39a9a0;
+
+  @include mobile {
+    font-size: 36px;
+    line-height: normal;
+  }
+
+  @include mobile {
+    grid-column: 1 / span 2;
+    grid-row: 1;
+  }
+}
+
+.filterSubcategories {
+  display: block;
+  color: #000;
+}
+
+.filterTags {
+  display: block;
+  background: var(--button-bg);
+  color: #fff;
+  border-radius: 16px;
+  padding: 12px 0 18px;
+
+  @include not-mobile {
+    display: none;
+  }
+
+  &.filterTagsCenter {
+    @include mobile {
+      width: 50%;
+      grid-column: 1 / span 2;
+      margin: 0 auto;
+    }
+  }
 }
 
 .tabButtons {
   display: flex;
   flex-direction: column;
+
+  @include mobile {
+    display: none;
+  }
 
   button {
     font-weight: 700;
@@ -66,6 +112,12 @@
     &:hover {
       background: var(--active-button-bg);
     }
+  }
+}
+
+.tabContent {
+  @include mobile {
+    grid-column: 1 / span 2;
   }
 }
 
@@ -94,7 +146,7 @@
       }
 
       .contentHoder {
-        max-height: 1000px;
+        max-height: 3000px;
         transition-delay: 0.2s;
       }
     }
@@ -113,6 +165,12 @@
   padding: 33px 48px;
   transition: all 0.5s ease-in-out;
 
+  @include mobile {
+    padding: 33px 23px;
+    font-size: 24px;
+    line-height: normal;
+  }
+
   .arrowHolder {
     color: #36a9a0;
     position: relative;
@@ -127,17 +185,31 @@
   }
 }
 
+.titleHolder {
+  margin-right: 10px;
+}
+
 .contentHoder {
   margin: 0 48px;
   max-height: 0;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 
+  @include mobile {
+    margin: 0 23px;
+  }
+
   p {
     font-weight: 500;
     font-size: 20px;
     line-height: 26.67px;
     padding-bottom: 26.67px;
+
+    @include mobile {
+      font-size: 16px;
+      line-height: normal;
+      padding-bottom: 18px;
+    }
 
     &:first-of-type {
       padding-top: 22px;

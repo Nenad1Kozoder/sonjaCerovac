@@ -155,24 +155,44 @@
     }
   }
   &.aestheticsurgery {
+    @include mobile {
+      min-height: 90vw;
+      padding-top: 84px;
+    }
+
     &::after {
       background: linear-gradient(90deg, #39a9a0 0%, rgba(20, 42, 53, 0) 100%);
     }
   }
 
   &.handwristsurgery {
+    @include mobile {
+      min-height: 90vw;
+      padding-top: 84px;
+    }
+
     &::after {
       background: linear-gradient(90deg, #9bccce 0%, rgba(20, 42, 53, 0) 100%);
     }
   }
 
   &.reconstructivesurgery {
+    @include mobile {
+      min-height: 90vw;
+      padding-top: 84px;
+    }
+
     &::after {
       background: linear-gradient(90deg, #529f82 0%, rgba(20, 42, 53, 0) 100%);
     }
   }
 
   &.whattoexpect {
+    @include mobile {
+      min-height: 90vw;
+      padding-top: 84px;
+    }
+
     &::after {
       background: linear-gradient(90deg, #3b7b9b 0%, rgba(20, 42, 53, 0) 100%);
     }

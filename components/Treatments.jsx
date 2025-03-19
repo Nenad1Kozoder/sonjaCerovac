@@ -4,8 +4,9 @@ import { FaAngleDown } from "react-icons/fa6";
 import classes from "./Treatments.module.scss";
 
 function Treatments({ treatments, slug, tags, colorClass }) {
-  const [activeTab, setActiveTab] = useState("tab0");
+  const [activeTab, setActiveTab] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentTag, setCurrentTag] = useState(0);
   const [openIndex, setOpenIndex] = useState(0);
 
   const targetRef = useRef(null);
@@ -133,26 +134,43 @@ function Treatments({ treatments, slug, tags, colorClass }) {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? uniqueCategories.length - 1 : prevIndex - 1
     );
+    setOpenIndex(0);
   };
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === uniqueCategories.length - 1 ? 0 : prevIndex + 1
     );
+    setOpenIndex(0);
   };
 
   const tagNames = tags.map((tag) => tag.name);
 
   uniqueTags.sort((a, b) => tagNames.indexOf(a) - tagNames.indexOf(b));
 
+  const prevTag = () => {
+    setActiveTab((prevIndex) =>
+      prevIndex === 0 ? uniqueTags.length - 1 : prevIndex - 1
+    );
+    setOpenIndex(0);
+  };
+
+  const nextTag = () => {
+    setActiveTab((prevIndex) =>
+      prevIndex === uniqueTags.length - 1 ? 0 : prevIndex + 1
+    );
+    setOpenIndex(0);
+  };
+
+  const uniqueCategoriesExist = uniqueCategories.length;
   return (
     <div
       ref={targetRef}
       className={`${classes.contentWraper} ${classes[colorClass]}`}
     >
-      {uniqueCategories ? (
+      {uniqueCategoriesExist ? (
         <Fragment>
-          <div className={classes.filterTags}>
+          <div className={classes.filterSubcategories}>
             <TreatmentSlider
               currentIndex={currentIndex}
               nextSlide={nextSlide}
@@ -165,13 +183,26 @@ function Treatments({ treatments, slug, tags, colorClass }) {
       ) : (
         ""
       )}
+      <div
+        className={`${classes.filterTags} ${
+          !uniqueCategoriesExist && classes.filterTagsCenter
+        }`}
+      >
+        <TreatmentSlider
+          currentIndex={activeTab}
+          nextSlide={nextTag}
+          prevSlide={prevTag}
+          treatments={uniqueTags}
+          isGreenBg={true}
+        />
+      </div>
       <div className={classes.tabButtons}>
         {uniqueTags.map((tag, index) => {
           return (
             <button
               key={index + 1}
-              onClick={() => handleTab(`tab${index}`)}
-              className={activeTab === `tab${index}` ? classes.active : ""}
+              onClick={() => handleTab(index)}
+              className={activeTab === index ? classes.active : ""}
             >
               {tag}
             </button>
@@ -185,8 +216,8 @@ function Treatments({ treatments, slug, tags, colorClass }) {
             .reverse();
 
           return (
-            activeTab === `tab${index}` && (
-              <div key={index + 1}>
+            activeTab === index && (
+              <div key={index + 1} className={classes.activeTreatmentHolder}>
                 <ul className={classes.treatmentList}>
                   {filteredTabTreatmens.map((treatment, index) => {
                     return (
@@ -205,7 +236,9 @@ function Treatments({ treatments, slug, tags, colorClass }) {
                             toggleAccordion(index)
                           }
                         >
-                          {treatment.title}
+                          <span className={classes.titleHolder}>
+                            {treatment.title}
+                          </span>
                           {filteredTabTreatmens.length > 1 ? (
                             <span className={classes.arrowHolder}>
                               <FaAngleDown className={classes.arrow} />

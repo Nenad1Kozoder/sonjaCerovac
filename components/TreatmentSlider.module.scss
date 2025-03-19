@@ -1,6 +1,9 @@
+@use "../styles/breakpoints.scss" as *;
+
 .sliderHoder {
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .slider {
@@ -8,12 +11,21 @@
   overflow: hidden;
   margin: 0 18.5px;
   flex: 1;
+
+  @include mobile {
+    margin: 0 20px;
+  }
 }
 
 .sliderTrack {
   display: flex;
   transition: transform 0.3s ease-in-out;
   list-style: none;
+  align-items: center;
+
+  @include mobile {
+    min-height: 53px;
+  }
 }
 
 .slide {
@@ -22,6 +34,12 @@
   font-size: 36px;
   line-height: 40px;
   text-align: center;
+  color: inherit;
+
+  @include mobile {
+    font-size: 20px;
+    line-height: normal;
+  }
 }
 
 .button {
@@ -33,28 +51,56 @@
   overflow: hidden;
   background: transparent;
   transition: all 0.3s ease-in-out;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 
-  img {
+  @include mobile {
+    width: 14px;
+    height: 19px;
+  }
+
+  svg {
     transition: all 0.3s ease-in-out;
-    width: auto;
-    height: auto;
+    width: 18.5px;
+    height: 26px;
+
+    @include mobile {
+      width: 14px;
+      height: 19px;
+    }
   }
 
   &:first-of-type {
-    left: -18.5px;
-    img {
+    left: 0;
+
+    @include mobile {
+      left: 5px;
+    }
+
+    svg {
       transform: rotate(-180deg) translate(10px, 10px);
     }
   }
 
   &:last-of-type {
     right: 0;
-    img {
+
+    svg {
       transform: translate(-10px, -10px);
     }
   }
+  @media (hover: hover) {
+    &:hover {
+      transform: scale(1.3);
+    }
+  }
 
-  &:hover {
-    transform: scale(1.3);
+  &.buttonWhite {
+    svg {
+      path {
+        fill: #fff;
+      }
+    }
   }
 }

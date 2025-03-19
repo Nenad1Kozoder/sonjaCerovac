@@ -1,3 +1,5 @@
+@use "../styles/breakpoints.scss" as *;
+
 .link {
   text-decoration: none;
   color: #fff;
@@ -9,6 +11,10 @@
   line-height: 29.33px;
   margin-bottom: 20px;
   transition: all 0.3s ease-in-out;
+
+  @include mobile {
+    display: none;
+  }
 
   img {
     margin: 3px 15px -3px 0;
