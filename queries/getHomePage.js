@@ -124,6 +124,11 @@ export const GET_HOME_PAGE = gql`
         references {
           references
         }
+        seo {
+          seoDescription
+          seoKeyWords
+          seoTitle
+        }
       }
     }
   }

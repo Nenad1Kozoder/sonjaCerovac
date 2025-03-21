@@ -10,6 +10,11 @@ export const GET_GALLERY = gql`
           sourceUrl(size: LARGE)
         }
       }
+      seo {
+        seoDescription
+        seoKeyWords
+        seoTitle
+      }
     }
   }
 `;

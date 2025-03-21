@@ -33,9 +33,7 @@ function TextComponent({
     .join(" ");
 
   if (titleDecoration) {
-    console.log("yes");
     title.replace(/ /g, titleDecoration);
-    console.log(title.replace(/ /g, titleDecoration));
   }
 
   return (

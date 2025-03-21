@@ -42,6 +42,11 @@ export const GET_ABOUT = gql`
           }
         }
       }
+      seo {
+        seoDescription
+        seoKeyWords
+        seoTitle
+      }
     }
   }
 `;

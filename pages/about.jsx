@@ -4,9 +4,10 @@ import { GET_ABOUT } from "@/queries/getAbout";
 import Section from "../components/Section";
 import TextComponent from "../components/TextComponent";
 import Button from "@/components/Button";
+import Head from "next/head";
 
 function About({ data }) {
-  const { groupSections, content, contactMe } = data.page;
+  const { groupSections, content, contactMe, seo = {} } = data.page;
 
   const sectionKeys = ["first", "second", "third"];
 
@@ -19,10 +20,40 @@ function About({ data }) {
       image: section[`${key}Image`]?.node?.sourceUrl,
     };
   });
-
+  console.log(groupSections);
+  const featuredImage = groupSections.firstSection.firstImage;
   const button = { buttonLabel: contactMe.linkLabel };
   return (
     <Fragment>
+      <Head>
+        <title>{seo.seoTitle || "Dr. Sonja Cerovic - About"}</title>
+        {seo.seoDescription && (
+          <meta name="description" content={seo.seoDescription.slice(0, 60)} />
+        )}
+        {seo.seoKeywodrs && <meta name="keywords" content={seo.seoKeyWodrs} />}
+        <meta
+          property="og:title"
+          content={seo.seoTitle || "Dr. Sonja Cerovic - About"}
+        />
+        {seo.seoDescription && (
+          <meta
+            property="og:description"
+            content={seo.seoDescription.slice(0, 60)}
+          />
+        )}
+        <meta property="og:image" content={featuredImage.node.sourceUrl} />
+        <meta
+          name="twitter:title"
+          content={seo.seoTitle || "Dr. Sonja Cerovic - About"}
+        />
+        {seo.seoDescription && (
+          <meta
+            name="twitter:description"
+            content={seo.seoDescription.slice(0, 60)}
+          />
+        )}
+        <meta name="twitter:image" content={featuredImage.node.sourceUrl} />
+      </Head>
       {aboutSections.map((section, index) => {
         return (
           <Section

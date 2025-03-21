@@ -4,9 +4,17 @@ import { GET_PROCEDURES } from "@/queries/getProcedures";
 import Section from "@/components/Section";
 import TextComponent from "@/components/TextComponent";
 import Button from "@/components/Button";
+import Head from "next/head";
 
 function Procedures({ data }) {
-  const { topSection, featuredImage, groupSections, content, contactMe } = data;
+  const {
+    topSection,
+    featuredImage,
+    groupSections,
+    content,
+    contactMe,
+    seo = {},
+  } = data;
 
   const sectionKeys = ["first", "second", "third"];
 
@@ -26,6 +34,35 @@ function Procedures({ data }) {
 
   return (
     <Fragment>
+      <Head>
+        <title>{seo.seoTitle || "Dr. Sonja Cerovic - Procedures"}</title>
+        {seo.seoDescription && (
+          <meta name="description" content={seo.seoDescription.slice(0, 60)} />
+        )}
+        {seo.seoKeywodrs && <meta name="keywords" content={seo.seoKeyWodrs} />}
+        <meta
+          property="og:title"
+          content={seo.seoTitle || "Dr. Sonja Cerovic - Procedures"}
+        />
+        {seo.seoDescription && (
+          <meta
+            property="og:description"
+            content={seo.seoDescription.slice(0, 60)}
+          />
+        )}
+        <meta property="og:image" content={featuredImage.node.sourceUrl} />
+        <meta
+          name="twitter:title"
+          content={seo.seoTitle || "Dr. Sonja Cerovic - Procedures"}
+        />
+        {seo.seoDescription && (
+          <meta
+            name="twitter:description"
+            content={seo.seoDescription.slice(0, 60)}
+          />
+        )}
+        <meta name="twitter:image" content={featuredImage.node.sourceUrl} />
+      </Head>
       <Section
         imgUrl={featuredImage.node.sourceUrl}
         title={topSection.topTitle}

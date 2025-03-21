@@ -8,6 +8,7 @@ import Testimonials from "../components/Testimonials";
 import Section from "../components/Section";
 import GalleryHome from "../components/GalleryHome";
 import References from "../components/References";
+import Head from "next/head";
 
 export default function Home({ data }) {
   const {
@@ -20,9 +21,11 @@ export default function Home({ data }) {
     testimonials,
     gallerySection,
     references,
+    seo = {},
   } = data;
 
   const topImg = featuredImage.node.sourceUrl;
+
   const expertises = [
     clinicalExpertiseSection.dropdownOne,
     clinicalExpertiseSection.dropdownTwo,
@@ -43,6 +46,35 @@ export default function Home({ data }) {
 
   return (
     <Fragment>
+      <Head>
+        <title>{seo.seoTitle || homeTopSection.title}</title>
+        {seo.seoDescription && (
+          <meta name="description" content={seo.seoDescription.slice(0, 60)} />
+        )}
+        {seo.seoKeywodrs && <meta name="keywords" content={seo.seoKeyWodrs} />}
+        <meta
+          property="og:title"
+          content={seo.seoTitle || homeTopSection.title}
+        />
+        {seo.seoDescription && (
+          <meta
+            property="og:description"
+            content={seo.seoDescription.slice(0, 60)}
+          />
+        )}
+        <meta property="og:image" content={featuredImage.node.sourceUrl} />
+        <meta
+          name="twitter:title"
+          content={seo.seoTitle || homeTopSection.title}
+        />
+        {seo.seoDescription && (
+          <meta
+            name="twitter:description"
+            content={seo.seoDescription.slice(0, 60)}
+          />
+        )}
+        <meta name="twitter:image" content={featuredImage.node.sourceUrl} />
+      </Head>
       <Section
         imgUrl={topImg}
         isRight={true}

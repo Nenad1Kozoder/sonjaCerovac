@@ -11,6 +11,11 @@ export const GET_PAGE_BY_SLUG = gql`
           sourceUrl(size: LARGE)
         }
       }
+      seo {
+        seoDescription
+        seoKeyWords
+        seoTitle
+      }
     }
   }
 `;

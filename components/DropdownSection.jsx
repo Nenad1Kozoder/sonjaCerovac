@@ -24,7 +24,6 @@ function DropdownSection({ title, expertises }) {
   }, [activeDropdown]);
 
   const toggleDropdown = (index) => {
-    console.log(activeDropdown);
     if (window.matchMedia("(hover: none)").matches) {
       setActiveDropdown((prevIndex) => (prevIndex === index ? null : index));
     }

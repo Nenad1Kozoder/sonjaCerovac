@@ -43,7 +43,13 @@ const NavMenu = ({ isHeader, menuItems }) => {
           className={classes.hamburger}
           onClick={() => setIsOpen(!isOpen)}
         >
-          <Image width={0} height={0} sizes="100vw" src={mobMenuImg} />
+          <Image
+            width={0}
+            height={0}
+            sizes="100vw"
+            src={mobMenuImg}
+            alt="mobile menu switch on"
+          />
         </button>
       </div>
 
@@ -58,7 +64,13 @@ const NavMenu = ({ isHeader, menuItems }) => {
             className={classes.hamburger}
             onClick={() => setIsOpen(!isOpen)}
           >
-            <Image width={0} height={0} sizes="100vw" src={mobMenuX} />
+            <Image
+              width={0}
+              height={0}
+              sizes="100vw"
+              src={mobMenuX}
+              alt="mobile menu switch off"
+            />
           </button>
           <ul>
             {menuItems.map((item, index) => {
@@ -68,12 +80,12 @@ const NavMenu = ({ isHeader, menuItems }) => {
                   : router.pathname.startsWith(item.path);
 
               return (
-                <li>
+                <li key={index}>
                   <Link
                     key={index}
                     href={item.path}
                     className={isActive ? classes.active : ""}
-                    onClick={() => setIsOpen(false)} // Zatvori meni na klik
+                    onClick={() => setIsOpen(false)}
                   >
                     {item.label}
                   </Link>

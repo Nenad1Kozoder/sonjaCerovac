@@ -24,6 +24,11 @@ export const GET_CONTACT = gql`
           }
         }
       }
+      seo {
+        seoDescription
+        seoKeyWords
+        seoTitle
+      }
     }
   }
 `;

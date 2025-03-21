@@ -8,6 +8,7 @@ import { GET_GALLERIES, GET_GALLERY } from "@/queries/getGallery";
 import Section from "@/components/Section";
 import TextComponent from "@/components/TextComponent";
 import classes from "./gallery.module.scss";
+import Head from "next/head";
 
 export default function GalleryPage({
   gallery,
@@ -23,19 +24,39 @@ export default function GalleryPage({
   if (router.isFallback) return <p>Loading...</p>;
   if (!gallery) return <p>Gallery not found</p>;
 
+  const { seo = {}, featuredImage, title } = gallery;
   return (
     <Fragment>
+      <Head>
+        <title>{seo.seoTitle || title}</title>
+        {seo.seoDescription && (
+          <meta name="description" content={seo.seoDescription.slice(0, 60)} />
+        )}
+        {seo.seoKeywodrs && <meta name="keywords" content={seo.seoKeyWodrs} />}
+        <meta property="og:title" content={seo.seoTitle || title} />
+        {seo.seoDescription && (
+          <meta
+            property="og:description"
+            content={seo.seoDescription.slice(0, 60)}
+          />
+        )}
+        <meta property="og:image" content={featuredImage.node.sourceUrl} />
+        <meta name="twitter:title" content={seo.seoTitle || title} />
+        {seo.seoDescription && (
+          <meta
+            name="twitter:description"
+            content={seo.seoDescription.slice(0, 60)}
+          />
+        )}
+        <meta name="twitter:image" content={featuredImage.node.sourceUrl} />
+      </Head>
       <Section
-        imgUrl={gallery.featuredImage.node.sourceUrl}
-        title={gallery.title}
+        imgUrl={featuredImage.node.sourceUrl}
+        title={title}
         customClass="isGallery"
         navigation={navigation}
       >
-        <TextComponent
-          title={gallery.title}
-          isBottom={true}
-          isWhiteTitle={true}
-        />
+        <TextComponent title={title} isBottom={true} isWhiteTitle={true} />
       </Section>
 
       <Section isWhite={true}>

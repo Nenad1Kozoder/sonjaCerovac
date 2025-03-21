@@ -71,6 +71,11 @@ export const GET_PROCEDURES = gql`
           }
         }
       }
+      seo {
+        seoDescription
+        seoKeyWords
+        seoTitle
+      }
     }
   }
 `;

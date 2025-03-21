@@ -59,7 +59,13 @@ function Section({
       )}
 
       {imgUrl && (
-        <Image className={classes.SectionImage} src={imgUrl} fill alt={title} />
+        <Image
+          className={classes.SectionImage}
+          src={imgUrl}
+          fill
+          alt={title}
+          priority={isHome ? true : false}
+        />
       )}
       {children}
     </section>
