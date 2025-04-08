@@ -16,9 +16,8 @@ function Page({ page, treatments, tags }) {
 
   const router = useRouter();
   const colorClass = page.slug.replaceAll("-", "");
-  const { seo = {}, featuredImage } = page;
-
-  console.log(page);
+  const { seo = {}, featuredImage, backButton } = page;
+  console.log(!page.backButton?.withoutBackButton?.includes("Yes"));
   return (
     <Fragment key={router.query.slug}>
       <Head>
@@ -55,7 +54,7 @@ function Page({ page, treatments, tags }) {
             title={page.title}
             description={page.content}
             isWhiteTitle={true}
-            hasBackBtn={true}
+            hasBackBtn={!backButton?.withoutBackButton?.includes("Yes")}
           />
         </Section>
       )}

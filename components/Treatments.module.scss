@@ -125,7 +125,7 @@
   list-style: none;
   margin: 0;
 
-  li {
+  > li {
     background: var(--gradient);
     border-radius: 28px;
     color: #fff;
@@ -191,6 +191,8 @@
 
 .contentHoder {
   margin: 0 48px;
+  font-weight: 500;
+  font-size: 20px;
   max-height: 0;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
@@ -199,24 +201,51 @@
     margin: 0 23px;
   }
 
+  strong,
+  b {
+    font-weight: 700;
+  }
+
   p {
-    font-weight: 500;
-    font-size: 20px;
     line-height: 26.67px;
-    padding-bottom: 26.67px;
 
     @include mobile {
       font-size: 16px;
       line-height: normal;
       padding-bottom: 18px;
     }
+  }
 
-    &:first-of-type {
-      padding-top: 22px;
-      border-top: 1px solid #fff;
-    }
-    &:last-of-type {
-      padding-bottom: 33px;
-    }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 22px 0;
+  }
+
+  a {
+    color: white;
+  }
+
+  ul {
+    padding-left: 30px;
+    list-style: disc;
+    margin: 22px 0;
+  }
+
+  ol {
+    padding-left: 30px;
+    margin: 22px 0;
+  }
+
+  & > *:first-child {
+    padding-top: 22px;
+    border-top: 1px solid #fff;
+  }
+
+  & > *:last-child {
+    padding-bottom: 33px;
   }
 }

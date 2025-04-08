@@ -98,6 +98,23 @@ export default function Home({ data }) {
         />
       </Section>
       <Section
+        imgUrl={gallerySection.galleryBackgroundImage.node.sourceUrl}
+        title={gallerySection.gellerySectionTitle}
+        noOverlay={true}
+        isRight={true}
+      >
+        <GalleryHome data={gallerySection} />
+      </Section>
+      <Section
+        imgUrl={testimonials.testimonialsBackgroundImage.node.sourceUrl}
+        title={testimonials.testimonialsTitle}
+      >
+        <Testimonials testimonials={testimonials} />
+      </Section>
+      <Section isGrid={true} isWhite={true}>
+        <ContactHomeSection data={contactHome} />
+      </Section>
+      <Section
         imgUrl={historySection.backgroundImage.node.sourceUrl}
         title={historySection.titleHistory}
       >
@@ -107,23 +124,6 @@ export default function Home({ data }) {
           isWhiteTitle={true}
           isFullWidth={true}
         />
-      </Section>
-      <Section isGrid={true} isWhite={true}>
-        <ContactHomeSection data={contactHome} />
-      </Section>
-      <Section
-        imgUrl={testimonials.testimonialsBackgroundImage.node.sourceUrl}
-        title={testimonials.testimonialsTitle}
-      >
-        <Testimonials testimonials={testimonials} />
-      </Section>
-      <Section
-        imgUrl={gallerySection.galleryBackgroundImage.node.sourceUrl}
-        title={gallerySection.gellerySectionTitle}
-        noOverlay={true}
-        isRight={true}
-      >
-        <GalleryHome data={gallerySection} />
       </Section>
       <Section isClean={true}>
         <References references={references.references} />

@@ -11,6 +11,9 @@ export const GET_PAGE_BY_SLUG = gql`
           sourceUrl(size: LARGE)
         }
       }
+      backButton {
+        withoutBackButton
+      }
       seo {
         seoDescription
         seoKeyWords

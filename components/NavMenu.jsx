@@ -4,11 +4,26 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import mobMenuImg from "../public/mobileMenu.svg";
 import mobMenuX from "../public/x.svg";
-import classes from "./NavMenu.module.scss"; // Uvozi SCSS
+import classes from "./NavMenu.module.scss";
+
+const isActiveItem = (item, currentPath, menuItems) => {
+  const isExactMatch = currentPath === item.path;
+  const isDescendant = currentPath.startsWith(item.path + "/");
+
+  const hasExplicitChildMatch = menuItems.some(
+    (child) =>
+      child.path !== item.path &&
+      child.path.startsWith(item.path + "/") &&
+      child.path === currentPath
+  );
+
+  return isExactMatch || (isDescendant && !hasExplicitChildMatch);
+};
 
 const NavMenu = ({ isHeader, menuItems }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const currentPath = router.asPath;
 
   return (
     <nav
@@ -16,27 +31,22 @@ const NavMenu = ({ isHeader, menuItems }) => {
     >
       <div>
         {/* Desktop meni */}
-        {
-          <ul className={classes.menu}>
-            {menuItems.map((item, index) => {
-              const isActive =
-                item.path === "/"
-                  ? router.pathname === "/"
-                  : router.pathname.startsWith(item.path);
+        <ul className={classes.menu}>
+          {menuItems.map((item, index) => {
+            const isActive = isActiveItem(item, currentPath, menuItems);
 
-              return (
-                <li key={index}>
-                  <Link
-                    href={item.path}
-                    className={isActive ? classes.active : ""}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        }
+            return (
+              <li key={index}>
+                <Link
+                  href={item.path}
+                  className={isActive ? classes.active : ""}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
 
         {/* Mobilni/tablet dugme */}
         <button
@@ -62,7 +72,7 @@ const NavMenu = ({ isHeader, menuItems }) => {
         >
           <button
             className={classes.hamburger}
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => setIsOpen(false)}
           >
             <Image
               width={0}
@@ -74,15 +84,11 @@ const NavMenu = ({ isHeader, menuItems }) => {
           </button>
           <ul>
             {menuItems.map((item, index) => {
-              const isActive =
-                item.path === "/"
-                  ? router.pathname === "/"
-                  : router.pathname.startsWith(item.path);
+              const isActive = isActiveItem(item, currentPath, menuItems);
 
               return (
                 <li key={index}>
                   <Link
-                    key={index}
                     href={item.path}
                     className={isActive ? classes.active : ""}
                     onClick={() => setIsOpen(false)}
