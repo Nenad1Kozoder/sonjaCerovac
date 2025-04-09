@@ -17,7 +17,7 @@ function Page({ page, treatments, tags }) {
   const router = useRouter();
   const colorClass = page.slug.replaceAll("-", "");
   const { seo = {}, featuredImage, backButton } = page;
-  console.log(!page.backButton?.withoutBackButton?.includes("Yes"));
+
   return (
     <Fragment key={router.query.slug}>
       <Head>
@@ -97,6 +97,9 @@ export async function getStaticProps({ params }) {
       }),
       client.query({
         query: GET_TREATMENTS,
+        variables: {
+          categoryName: params.slug,
+        },
       }),
       client.query({
         query: GET_TAGS,

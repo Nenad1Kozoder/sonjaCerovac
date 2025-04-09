@@ -1,12 +1,12 @@
 import { Fragment, useState, useRef } from "react";
 import TreatmentSlider from "@/components/TreatmentSlider";
 import { FaAngleDown } from "react-icons/fa6";
+
 import classes from "./Treatments.module.scss";
 
 function Treatments({ treatments, slug, tags, colorClass }) {
   const [activeTab, setActiveTab] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentTag, setCurrentTag] = useState(0);
   const [openIndex, setOpenIndex] = useState(0);
 
   const targetRef = useRef(null);

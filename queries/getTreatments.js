@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_TREATMENTS = gql`
-  query GetTreatments {
-    treatments(first: 100) {
+  query GetTreatmentsByCategory($categoryName: String!) {
+    treatments(first: 200, where: { categoryName: $categoryName }) {
       nodes {
         title
         content
@@ -23,6 +23,16 @@ export const GET_TREATMENTS = gql`
             }
           }
         }
+      }
+    }
+  }
+`;
+
+export const GET_TREATMENT_CONTENT = gql`
+  query GetTreatmentContent($title: String!) {
+    treatments(where: { title: $title }) {
+      nodes {
+        content
       }
     }
   }
