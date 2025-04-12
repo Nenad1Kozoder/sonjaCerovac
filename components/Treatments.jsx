@@ -17,10 +17,10 @@ function Treatments({ tags, colorClass, categoryID, slug }) {
     variables: { id: categoryID },
   });
 
-  const categories = categoryData?.category?.children?.nodes || [
-    { name: slug },
-  ];
-  console.log("category: ", categories);
+  const rawCategories = categoryData?.category?.children?.nodes || [];
+  const categories = rawCategories.length
+    ? [...rawCategories].reverse()
+    : [{ name: slug }];
 
   const [activeCategoryName, setActiveCategoryName] = useState("");
   const [uniqueTags, setUniqueTags] = useState([]);
@@ -31,6 +31,9 @@ function Treatments({ tags, colorClass, categoryID, slug }) {
   const targetRef = useRef(null);
 
   useEffect(() => {
+    if (categories.length > 0) {
+      setActiveCategoryName(categories[0].name);
+    }
     if (categories.length > 0) {
       setActiveCategoryName(categories[0].name);
     }
@@ -62,8 +65,6 @@ function Treatments({ tags, colorClass, categoryID, slug }) {
       setUniqueTags(result);
     }
   }, [treatments, tags]);
-
-  console.log(treatments);
 
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -185,7 +186,7 @@ function Treatments({ tags, colorClass, categoryID, slug }) {
           {uniqueTags.map((tag, index) => {
             const filteredTabTreatmens = treatments
               .filter((tabTreatment) =>
-                tabTreatment.tags.nodes.some((node) => node.name.includes(tag))
+                tabTreatment.tags.nodes.some((node) => node.name === tag)
               )
               .reverse();
 
