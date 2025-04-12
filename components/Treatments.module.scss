@@ -12,6 +12,10 @@
   margin: 45px auto 33px;
   min-height: 100vh;
 
+  &.noColumns {
+    grid-template-columns: 1fr;
+  }
+
   @include mobile {
     grid-template-columns: calc(45% - (25px / 2)) calc(55% - (25px / 2));
     align-items: center;

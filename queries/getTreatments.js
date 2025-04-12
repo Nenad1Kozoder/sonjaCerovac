@@ -37,3 +37,27 @@ export const GET_TREATMENT_CONTENT = gql`
     }
   }
 `;
+
+export const GET_TREATMENTS_BY_CATEGORY = gql`
+  query GetTreatmentsByCategory($category: String!) {
+    treatments(first: 100, where: { categoryName: $category }) {
+      nodes {
+        title
+        slug
+        content
+        categories {
+          nodes {
+            name
+            slug
+          }
+        }
+        tags {
+          nodes {
+            slug
+            name
+          }
+        }
+      }
+    }
+  }
+`;

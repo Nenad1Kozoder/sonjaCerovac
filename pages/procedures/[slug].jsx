@@ -2,6 +2,7 @@ import client from "@/lib/apolloClient";
 import { GET_PAGE_BY_SLUG } from "@/queries/getPageBySlug";
 import { GET_ALL_PAGES_SLUGS } from "@/queries/getAllPagesSlugs";
 import { GET_TREATMENTS } from "@/queries/getTreatments";
+import { GET_CATEGORIES } from "@/queries/getCategories";
 import { GET_TAGS } from "@/queries/getTags";
 import { Fragment } from "react";
 import { useRouter } from "next/router";
@@ -11,12 +12,14 @@ import TextComponent from "@/components/TextComponent";
 import Treatments from "@/components/Treatments";
 import Head from "next/head";
 
-function Page({ page, treatments, tags }) {
+function Page({ page, treatments, tags, categories }) {
   if (!page) return <div>Page not found</div>;
 
   const router = useRouter();
   const colorClass = page.slug.replaceAll("-", "");
   const { seo = {}, featuredImage, backButton } = page;
+
+  const category = categories.find((cat) => cat.slug === page.slug);
 
   return (
     <Fragment key={router.query.slug}>
@@ -63,6 +66,7 @@ function Page({ page, treatments, tags }) {
         slug={page.slug}
         tags={tags}
         colorClass={colorClass}
+        categoryID={category.id}
       />
     </Fragment>
   );
@@ -90,27 +94,32 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   try {
-    const [pageData, treatmentsData, tagsData] = await Promise.all([
-      client.query({
-        query: GET_PAGE_BY_SLUG,
-        variables: { slug: params.slug },
-      }),
-      client.query({
-        query: GET_TREATMENTS,
-        variables: {
-          categoryName: params.slug,
-        },
-      }),
-      client.query({
-        query: GET_TAGS,
-      }),
-    ]);
+    const [pageData, treatmentsData, tagsData, categoriesData] =
+      await Promise.all([
+        client.query({
+          query: GET_PAGE_BY_SLUG,
+          variables: { slug: params.slug },
+        }),
+        client.query({
+          query: GET_TREATMENTS,
+          variables: {
+            categoryName: params.slug,
+          },
+        }),
+        client.query({
+          query: GET_TAGS,
+        }),
+        client.query({
+          query: GET_CATEGORIES,
+        }),
+      ]);
 
     return {
       props: {
         page: pageData.data.pageBy,
         treatments: treatmentsData.data,
         tags: tagsData.data.tags.nodes,
+        categories: categoriesData.data.categories.nodes,
       },
       revalidate: 60,
     };
@@ -121,6 +130,7 @@ export async function getStaticProps({ params }) {
         page: null,
         treatments: null,
         tags: null,
+        categories: null,
       },
     };
   }

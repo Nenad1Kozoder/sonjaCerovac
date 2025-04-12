@@ -1,22 +1,76 @@
-import { Fragment, useState, useRef } from "react";
+import { Fragment, useState, useRef, useEffect } from "react";
+import { useQuery } from "@apollo/client";
 import TreatmentSlider from "@/components/TreatmentSlider";
 import { FaAngleDown } from "react-icons/fa6";
+import { GET_CATEGORIES_BY_PARENT_ID } from "@/queries/getCategories";
+import { GET_TREATMENTS_BY_CATEGORY } from "@/queries/getTreatments";
+import Loader from "@/components/Loader";
 
 import classes from "./Treatments.module.scss";
 
-function Treatments({ treatments, slug, tags, colorClass }) {
+function Treatments({ tags, colorClass, categoryID, slug }) {
+  const {
+    data: categoryData,
+    loading: categoryLoading,
+    error: categoryError,
+  } = useQuery(GET_CATEGORIES_BY_PARENT_ID, {
+    variables: { id: categoryID },
+  });
+
+  const categories = categoryData?.category?.children?.nodes || [
+    { name: slug },
+  ];
+  console.log("category: ", categories);
+
+  const [activeCategoryName, setActiveCategoryName] = useState("");
+  const [uniqueTags, setUniqueTags] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [openIndex, setOpenIndex] = useState(0);
 
   const targetRef = useRef(null);
 
+  useEffect(() => {
+    if (categories.length > 0) {
+      setActiveCategoryName(categories[0].name);
+    }
+  }, [categories]);
+
+  const { data: treatmentsData, loading: treatmentsLoading } = useQuery(
+    GET_TREATMENTS_BY_CATEGORY,
+    {
+      variables: { category: activeCategoryName },
+    }
+  );
+
+  const treatments = treatmentsData?.treatments?.nodes || [];
+
+  useEffect(() => {
+    if (treatments.length > 0) {
+      const pageTags = [
+        ...new Set(
+          treatments.flatMap((treatment) =>
+            treatment.tags.nodes.map((tag) => tag.name)
+          )
+        ),
+      ];
+
+      const result = tags
+        .map((tag) => tag.name)
+        .filter((name) => pageTags.includes(name));
+
+      setUniqueTags(result);
+    }
+  }, [treatments, tags]);
+
+  console.log(treatments);
+
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  function handleTab(activeTab) {
-    setActiveTab(activeTab);
+  const handleTab = (index) => {
+    setActiveTab(index);
     setOpenIndex(0);
 
     if (targetRef.current) {
@@ -24,129 +78,27 @@ function Treatments({ treatments, slug, tags, colorClass }) {
         targetRef.current.getBoundingClientRect().top + window.scrollY;
       window.scrollTo({ top: elementPosition - 40, behavior: "smooth" });
     }
-  }
-
-  const transformedTreatments = treatments.treatments.nodes.map((treatment) => {
-    const category1 =
-      treatment.categories.edges.length > 0
-        ? treatment.categories.edges[0].node.name
-        : null;
-    const category2 =
-      treatment.categories.edges.length > 1
-        ? treatment.categories.edges[1].node.name
-        : null;
-
-    const categorySlug1 =
-      treatment.categories.edges.length > 0
-        ? treatment.categories.edges[0].node.slug
-        : null;
-    const categorySlug2 =
-      treatment.categories.edges.length > 1
-        ? treatment.categories.edges[1].node.slug
-        : null;
-
-    const tags =
-      treatment.tags.edges.length > 0
-        ? treatment.tags.edges.map((edge) => edge.node.name)
-        : [];
-
-    const tagSlugs =
-      treatment.tags.edges.length > 0
-        ? treatment.tags.edges.map((edge) => edge.node.slug)
-        : [];
-    const menuOrder = treatment.menuOrder ? treatment.menuOrder : null;
-
-    return {
-      title: treatment.title,
-      content: treatment.content,
-      category1,
-      category2,
-      categorySlug1,
-      categorySlug2,
-      tags,
-      tagSlugs,
-      menuOrder,
-    };
-  });
-
-  const filterByCategorySlug = (catSlug) => {
-    return transformedTreatments
-      .filter((treatment) =>
-        [treatment.categorySlug1, treatment.categorySlug2].includes(catSlug)
-      )
-      .sort((a, b) => b.menuOrder - a.menuOrder)
-      .map((treatment) => {
-        const updatedTreatment = { ...treatment };
-        const categories = [
-          {
-            slug: updatedTreatment.categorySlug1,
-            category: "category1",
-            slugField: "categorySlug1",
-          },
-          {
-            slug: updatedTreatment.categorySlug2,
-            category: "category2",
-            slugField: "categorySlug2",
-          },
-        ];
-
-        categories.forEach(({ slug, category, slugField }) => {
-          if (slug === catSlug) {
-            updatedTreatment.category =
-              updatedTreatment[
-                category === "category1" ? "category2" : "category1"
-              ];
-            updatedTreatment.categorySlug =
-              updatedTreatment[
-                slugField === "categorySlug1"
-                  ? "categorySlug2"
-                  : "categorySlug1"
-              ];
-
-            delete updatedTreatment[category];
-            delete updatedTreatment[slugField];
-          }
-        });
-
-        return updatedTreatment;
-      });
   };
-  const pageTreatments = filterByCategorySlug(slug);
-
-  const uniqueCategories =
-    pageTreatments.length > 0 && pageTreatments[0].category
-      ? [...new Set(pageTreatments.map((treatment) => treatment.category))]
-      : [];
-
-  const tabsTreatments = pageTreatments.filter((treatment) =>
-    treatment.category
-      ? treatment.category.includes(uniqueCategories[currentIndex])
-      : treatment
-  );
-
-  const uniqueTags = [
-    ...new Set(
-      tabsTreatments.flatMap((treatment) => treatment.tags.map((tag) => tag))
-    ),
-  ];
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? uniqueCategories.length - 1 : prevIndex - 1
-    );
     setOpenIndex(0);
+    setActiveTab(0);
+    setCurrentIndex((prevIndex) => {
+      const nextIndex = prevIndex === 0 ? categories.length - 1 : prevIndex - 1;
+      setActiveCategoryName(categories[nextIndex].name);
+      return nextIndex;
+    });
   };
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === uniqueCategories.length - 1 ? 0 : prevIndex + 1
-    );
     setOpenIndex(0);
+    setActiveTab(0);
+    setCurrentIndex((prevIndex) => {
+      const nextIndex = prevIndex === categories.length - 1 ? 0 : prevIndex + 1;
+      setActiveCategoryName(categories[nextIndex].name);
+      return nextIndex;
+    });
   };
-
-  const tagNames = tags.map((tag) => tag.name);
-
-  uniqueTags.sort((a, b) => tagNames.indexOf(a) - tagNames.indexOf(b));
 
   const prevTag = () => {
     setActiveTab((prevIndex) =>
@@ -162,89 +114,106 @@ function Treatments({ treatments, slug, tags, colorClass }) {
     setOpenIndex(0);
   };
 
-  const uniqueCategoriesExist = uniqueCategories.length;
+  const uniqueCategoriesExist = categories.length > 0;
+
+  if (categoryLoading) {
+    return (
+      <div className={`${classes.contentWraper} ${classes["noColumns"]}`}>
+        <Loader colorClass={colorClass} />
+      </div>
+    );
+  }
+
   return (
     <div
       ref={targetRef}
       className={`${classes.contentWraper} ${classes[colorClass]}`}
     >
-      {uniqueCategoriesExist ? (
+      {uniqueCategoriesExist && (
         <Fragment>
           <div className={classes.filterSubcategories}>
             <TreatmentSlider
               currentIndex={currentIndex}
               nextSlide={nextSlide}
               prevSlide={prevSlide}
-              treatments={uniqueCategories}
+              categories={categories}
             />
           </div>
+
           <h2 className={classes.title}>Treatment Types</h2>
         </Fragment>
-      ) : (
-        ""
       )}
+
       <div
         className={`${classes.filterTags} ${
           !uniqueCategoriesExist && classes.filterTagsCenter
         }`}
       >
-        <TreatmentSlider
-          currentIndex={activeTab}
-          nextSlide={nextTag}
-          prevSlide={prevTag}
-          treatments={uniqueTags}
-          isGreenBg={true}
-        />
+        {treatmentsLoading ? (
+          <Loader colorClass={colorClass} />
+        ) : (
+          <TreatmentSlider
+            currentIndex={activeTab}
+            nextSlide={nextTag}
+            prevSlide={prevTag}
+            categories={uniqueTags}
+            isGreenBg={true}
+          />
+        )}
       </div>
+
       <div className={classes.tabButtons}>
-        {uniqueTags.map((tag, index) => {
-          return (
+        {treatmentsLoading ? (
+          <Loader colorClass={colorClass} />
+        ) : (
+          uniqueTags.map((tag, index) => (
             <button
-              key={index + 1}
+              key={index}
               onClick={() => handleTab(index)}
               className={activeTab === index ? classes.active : ""}
             >
               {tag}
             </button>
-          );
-        })}
+          ))
+        )}
       </div>
-      <div className={classes.tabContent}>
-        {uniqueTags.map((tag, index) => {
-          const filteredTabTreatmens = tabsTreatments
-            .filter((tabTreatment) => tabTreatment.tags.includes(tag))
-            .reverse();
 
-          return (
-            activeTab === index && (
-              <div key={index + 1} className={classes.activeTreatmentHolder}>
-                <ul className={classes.treatmentList}>
-                  {filteredTabTreatmens.map((treatment, index) => {
-                    return (
+      {treatmentsLoading ? (
+        <Loader colorClass={colorClass} />
+      ) : (
+        <div className={classes.tabContent}>
+          {uniqueTags.map((tag, index) => {
+            const filteredTabTreatmens = treatments
+              .filter((tabTreatment) =>
+                tabTreatment.tags.nodes.some((node) => node.name.includes(tag))
+              )
+              .reverse();
+
+            return (
+              activeTab === index && (
+                <div key={index} className={classes.activeTreatmentHolder}>
+                  <ul className={classes.treatmentList}>
+                    {filteredTabTreatmens.map((treatment, i) => (
                       <li
-                        key={index}
+                        key={i}
                         className={
-                          openIndex === index
-                            ? classes.isOpen
-                            : classes.isClosed
+                          openIndex === i ? classes.isOpen : classes.isClosed
                         }
                       >
                         <h3
                           className={classes.treatmentTitle}
                           onClick={() =>
                             filteredTabTreatmens.length > 1 &&
-                            toggleAccordion(index)
+                            toggleAccordion(i)
                           }
                         >
                           <span className={classes.titleHolder}>
                             {treatment.title}
                           </span>
-                          {filteredTabTreatmens.length > 1 ? (
+                          {filteredTabTreatmens.length > 1 && (
                             <span className={classes.arrowHolder}>
                               <FaAngleDown className={classes.arrow} />
                             </span>
-                          ) : (
-                            ""
                           )}
                         </h3>
                         <div
@@ -254,14 +223,14 @@ function Treatments({ treatments, slug, tags, colorClass }) {
                           }}
                         />
                       </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            )
-          );
-        })}
-      </div>
+                    ))}
+                  </ul>
+                </div>
+              )
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

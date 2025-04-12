@@ -1,11 +1,11 @@
 import classes from "./TreatmentSlider.module.scss";
 
 const TreatmentSlider = ({
-  treatments,
   prevSlide,
   nextSlide,
   currentIndex,
   isGreenBg,
+  categories,
 }) => {
   return (
     <div className={classes.sliderHoder}>
@@ -28,11 +28,12 @@ const TreatmentSlider = ({
           className={classes.sliderTrack}
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
-          {treatments.map((category, index) => (
-            <li key={index} className={classes.slide}>
-              {category}
-            </li>
-          ))}
+          {categories &&
+            categories.map((category, index) => (
+              <li key={index} className={classes.slide}>
+                {category.name || category}
+              </li>
+            ))}
         </ul>
       </div>
       <button
