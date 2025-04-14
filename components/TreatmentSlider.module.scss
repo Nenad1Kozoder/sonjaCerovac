@@ -4,6 +4,20 @@
   display: flex;
   align-items: center;
   position: relative;
+  --arrow-color: #36a9a0;
+
+  &.aestheticsurgery {
+    --arrow-color: #39a9a0;
+  }
+  &.handwristsurgery {
+    --arrow-color: #9bccce;
+  }
+  &.reconstructivesurgery {
+    --arrow-color: #55a486;
+  }
+  &.whattoexpect {
+    --arrow-color: #3b7b9b;
+  }
 }
 
 .slider {
@@ -68,6 +82,10 @@
     @include mobile {
       width: 14px;
       height: 19px;
+    }
+
+    path {
+      fill: var(--arrow-color);
     }
   }
 

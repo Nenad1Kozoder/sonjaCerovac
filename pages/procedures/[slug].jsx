@@ -65,7 +65,6 @@ function Page({ page, tags, categories }) {
         </Section>
       )}
       <Treatments
-        slug={page.slug}
         tags={tags}
         colorClass={colorClass}
         categoryID={category.id}

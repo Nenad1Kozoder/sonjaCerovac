@@ -27,7 +27,7 @@ const MapComponent = ({ data }) => {
 
   return (
     <div className={classes.mapHolder}>
-      <MapContainer center={position} zoom={13} style={{ height: "100%" }}>
+      <MapContainer center={position} zoom={12} style={{ height: "100%" }}>
         <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
         <Marker position={position} icon={customIcon}>
           <Popup>Beograd, Srbija</Popup>

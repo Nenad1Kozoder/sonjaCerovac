@@ -8,7 +8,7 @@ import Loader from "@/components/Loader";
 
 import classes from "./Treatments.module.scss";
 
-function Treatments({ tags, colorClass, categoryID, slug }) {
+function Treatments({ tags, colorClass, categoryID }) {
   const {
     data: categoryData,
     loading: categoryLoading,
@@ -17,10 +17,10 @@ function Treatments({ tags, colorClass, categoryID, slug }) {
     variables: { id: categoryID },
   });
 
-  const rawCategories = categoryData?.category?.children?.nodes || [];
-  const categories = rawCategories.length
-    ? [...rawCategories].reverse()
-    : [{ name: slug }];
+  const categories =
+    categoryData?.category?.children?.nodes?.length > 0
+      ? [...categoryData.category.children.nodes].reverse()
+      : [{ name: categoryData?.category?.name }];
 
   const [activeCategoryName, setActiveCategoryName] = useState("");
   const [uniqueTags, setUniqueTags] = useState([]);
@@ -34,10 +34,7 @@ function Treatments({ tags, colorClass, categoryID, slug }) {
     if (categories.length > 0) {
       setActiveCategoryName(categories[0].name);
     }
-    if (categories.length > 0) {
-      setActiveCategoryName(categories[0].name);
-    }
-  }, [categories]);
+  }, [categoryData]);
 
   const { data: treatmentsData, loading: treatmentsLoading } = useQuery(
     GET_TREATMENTS_BY_CATEGORY,
@@ -64,7 +61,7 @@ function Treatments({ tags, colorClass, categoryID, slug }) {
 
       setUniqueTags(result);
     }
-  }, [treatments, tags]);
+  }, [treatments]);
 
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -115,7 +112,7 @@ function Treatments({ tags, colorClass, categoryID, slug }) {
     setOpenIndex(0);
   };
 
-  const uniqueCategoriesExist = categories.length > 0;
+  const uniqueCategoriesExist = categories.length > 1;
 
   if (categoryLoading) {
     return (
@@ -138,6 +135,7 @@ function Treatments({ tags, colorClass, categoryID, slug }) {
               nextSlide={nextSlide}
               prevSlide={prevSlide}
               categories={categories}
+              colorClass={colorClass}
             />
           </div>
 

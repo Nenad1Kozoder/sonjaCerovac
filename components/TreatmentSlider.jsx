@@ -6,11 +6,16 @@ const TreatmentSlider = ({
   currentIndex,
   isGreenBg,
   categories,
+  colorClass,
 }) => {
   return (
-    <div className={classes.sliderHoder}>
+    <div
+      className={`${classes.sliderHoder} ${
+        colorClass ? classes[colorClass] : ""
+      }`}
+    >
       <button
-        className={`${classes.button} ${isGreenBg && classes.buttonWhite}`}
+        className={`${classes.button} ${isGreenBg ? classes.buttonWhite : ""}`}
         onClick={prevSlide}
       >
         <svg
