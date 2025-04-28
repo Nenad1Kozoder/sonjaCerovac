@@ -101,7 +101,6 @@ export default function Home({ data }) {
         imgUrl={gallerySection.galleryBackgroundImage.node.sourceUrl}
         title={gallerySection.gellerySectionTitle}
         noOverlay={true}
-        isRight={true}
       >
         <GalleryHome data={gallerySection} />
       </Section>
