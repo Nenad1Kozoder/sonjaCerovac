@@ -20,7 +20,7 @@ function About({ data }) {
       image: section[`${key}Image`]?.node?.sourceUrl,
     };
   });
-  console.log(groupSections);
+
   const featuredImage = groupSections.firstSection.firstImage;
   const button = { buttonLabel: contactMe.linkLabel };
   return (

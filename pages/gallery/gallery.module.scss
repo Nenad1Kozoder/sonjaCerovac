@@ -9,8 +9,31 @@
     overflow: hidden;
     border-radius: 28px;
   }
+
+  figure {
+    position: relative;
+
+    &:hover {
+      figcaption {
+        transform: translateY(100%);
+      }
+    }
+  }
+
   img {
     width: 100%;
-    cursor: "pointer";
+    cursor: pointer;
+  }
+
+  figcaption {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    width: 100%;
+    transition: transform 0.3s ease-in-out;
+    text-align: center;
+    background: rgba(#3ba299, 0.6);
+    color: white;
+    padding: 8px;
   }
 }

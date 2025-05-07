@@ -1,14 +1,16 @@
 import client from "../../lib/apolloClient";
 import { useRouter } from "next/router";
 import Lightbox from "yet-another-react-lightbox";
+import Captions from "yet-another-react-lightbox/plugins/captions";
 import "yet-another-react-lightbox/styles.css";
+import "yet-another-react-lightbox/plugins/captions.css";
 import { Fragment, useState } from "react";
-const cheerio = require("cheerio");
 import { GET_GALLERIES, GET_GALLERY } from "@/queries/getGallery";
 import Section from "@/components/Section";
 import TextComponent from "@/components/TextComponent";
 import classes from "./gallery.module.scss";
 import Head from "next/head";
+const cheerio = require("cheerio");
 
 export default function GalleryPage({
   gallery,
@@ -25,6 +27,7 @@ export default function GalleryPage({
   if (!gallery) return <p>Gallery not found</p>;
 
   const { seo = {}, featuredImage, title } = gallery;
+
   return (
     <Fragment>
       <Head>
@@ -61,16 +64,19 @@ export default function GalleryPage({
 
       <Section isWhite={true}>
         <ul className={classes.list}>
-          {images.map((src, idx) => (
+          {images.map((image, idx) => (
             <li key={idx}>
-              <img
-                src={src}
-                alt={`Gallery image ${idx}`}
-                onClick={() => {
-                  setIndex(idx);
-                  setOpen(true);
-                }}
-              />
+              <figure>
+                <img
+                  src={image.src}
+                  alt={image.caption}
+                  onClick={() => {
+                    setIndex(idx);
+                    setOpen(true);
+                  }}
+                />
+                <figcaption>{image.caption}</figcaption>
+              </figure>
             </li>
           ))}
         </ul>
@@ -78,9 +84,13 @@ export default function GalleryPage({
 
       <Lightbox
         open={open}
+        plugins={[Captions]}
         close={() => setOpen(false)}
         index={index}
-        slides={images.map((src) => ({ src }))}
+        slides={images.map((img) => ({
+          src: img.src,
+          title: img.caption,
+        }))}
       />
     </Fragment>
   );
@@ -112,8 +122,13 @@ export async function getStaticProps({ params }) {
   const nextGallery = galleries[(currentIndex + 1) % galleries.length];
 
   const $ = cheerio.load(galleryData.galleryBy.content);
-  const images = $("img")
-    .map((_, img) => $(img).attr("src"))
+  const images = $("dl.gallery-item")
+    .map((_, el) => {
+      const src = $(el).find("img").attr("src");
+      const caption = $(el).find(".gallery-caption").text().trim();
+
+      return { src, caption };
+    })
     .get();
 
   return {
