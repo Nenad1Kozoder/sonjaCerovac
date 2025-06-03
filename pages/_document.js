@@ -6,7 +6,7 @@ export default function Document() {
       <Head>
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://sonjacerovac.com/" />
-        <meta
+        {/* <meta
           name="description"
           content="Sonja Cerovac is a Plastic Surgeon with specialist interest in aesthetic, hand and wrist and reconstructive skin surgery. "
         />
@@ -35,7 +35,7 @@ export default function Document() {
         <meta
           name="twitter:image"
           content="https://www.medinex.rs/assets/images/proizvodi.jpg"
-        />
+        /> */}
       </Head>
       <body>
         <Main />

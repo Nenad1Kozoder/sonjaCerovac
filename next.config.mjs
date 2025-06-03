@@ -13,7 +13,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "sonjacerovac.nenad-kozoder.rs",
+        hostname: "wpres.sonjacerovac.com",
       },
     ],
   },
