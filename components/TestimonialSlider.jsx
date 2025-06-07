@@ -1,98 +1,107 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import classes from "./TestimonialSlider.module.scss";
+
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    const check = window.matchMedia(
+      "(hover: hover) and (pointer: fine)"
+    ).matches;
+    setIsDesktop(check);
+  }, []);
+  return isDesktop;
+}
 
 function TestimonialsSlider({ list }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [touchStartX, setTouchStartX] = useState(null);
-  const [startX, setStartX] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState(0); // Držimo pomak dok prevlačimo
-  const [isMouseOver, setIsMouseOver] = useState(false); // Da li je miša iznad holdera
+  const [isMouseOver, setIsMouseOver] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [maxHeight, setMaxHeight] = useState(0);
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+  const itemRefs = useRef([]);
+
+  const isDesktop = useIsDesktop();
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!isDragging && !isMouseOver) {
+      if (!isMouseOver) {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % list.length);
       }
     }, 5000);
-
     return () => clearInterval(interval);
-  }, [list.length, isDragging, isMouseOver]);
+  }, [list.length, isMouseOver]);
 
-  const handleTouchStart = (e) => {
-    setTouchStartX(e.touches[0].clientX);
+  useEffect(() => {
+    if (!list || list.length === 0) return;
+    itemRefs.current = itemRefs.current.slice(0, list.length);
+    setTimeout(() => {
+      const heights = itemRefs.current.map((ref) => ref?.offsetHeight || 0);
+      setMaxHeight(Math.max(...heights));
+    }, 0);
+  }, [list]);
+
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % list.length);
   };
 
-  const handleTouchEnd = (e) => {
-    if (!touchStartX) return;
-
-    const touchEndX = e.changedTouches[0].clientX;
-    const diff = touchStartX - touchEndX;
-
-    // Provera za prevlačenje u levo/desno
-    if (diff > 50) {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % list.length); // Sledeći slajd
-    } else if (diff < -50) {
-      setCurrentIndex((prevIndex) =>
-        prevIndex === 0 ? list.length - 1 : prevIndex - 1
-      ); // Prethodni slajd
+  const handleClick = (e) => {
+    if (e.button === 0) {
+      // levi klik ili tap
+      nextSlide();
     }
-
-    setTouchStartX(null);
-    setDragOffset(0); // Resetujemo pomak nakon prevlačenja
-  };
-
-  const handleMouseDown = (e) => {
-    setStartX(e.clientX);
-    setIsDragging(true);
   };
 
   const handleMouseMove = (e) => {
-    if (!startX || !isDragging) return;
-
-    const diff = e.clientX - startX; // Razlika između početne i trenutne pozicije
-    setDragOffset(diff); // Držimo pomak koji pratimo dok prevlačimo
+    setTooltipPos({ x: e.clientX + 15, y: e.clientY + 15 }); // pomeraj tooltipa
   };
 
-  const handleMouseUp = () => {
-    if (!startX || !isDragging) return;
-
-    const diff = startX - dragOffset;
-    if (diff > 50) {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % list.length); // Sledeći slajd
-    } else if (diff < -50) {
-      setCurrentIndex((prevIndex) =>
-        prevIndex === 0 ? list.length - 1 : prevIndex - 1
-      ); // Prethodni slajd
-    }
-
-    setStartX(null);
-    setIsDragging(false);
-    setDragOffset(0); // Resetujemo pomak
+  const handleMouseEnter = () => {
+    setIsMouseOver(true);
+    setShowTooltip(true);
   };
 
-  const transformStyle = {
-    transform: `translateX(${dragOffset}px)`, // Pomeri slajd u skladu sa prevlačenjem
-    transition: isDragging ? "none" : "transform 0.3s ease", // Tranzicija se ne koristi dok se vuče
+  const handleMouseLeave = () => {
+    setIsMouseOver(false);
+    setShowTooltip(false);
   };
 
   return (
     <div
       className={classes.listHolder}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={() => setIsMouseOver(false)} // Kad miša napusti element, restartuj automatsko pomeranje
-      onMouseEnter={() => setIsMouseOver(true)} // Kad je miša iznad, pauziraj automatsko pomeranje
+      style={{ height: maxHeight }}
+      onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onMouseMove={isDesktop ? handleMouseMove : undefined}
     >
+      {isDesktop && showTooltip && (
+        <div
+          className={classes.tooltip}
+          style={{
+            position: "fixed",
+            top: tooltipPos.y,
+            left: tooltipPos.x,
+            pointerEvents: "none",
+            userSelect: "none",
+          }}
+        >
+          Click to advance
+        </div>
+      )}
       <ul className={classes.list}>
-        <li
-          key={list[currentIndex].node.id}
-          style={transformStyle} // Primeni transformaciju sa pomakom
-          dangerouslySetInnerHTML={{ __html: list[currentIndex].node.content }}
-        />
+        {!isDesktop && (
+          <div className={classes.mobileMessage}>{"(Tap to advance)"}</div>
+        )}
+        {list.map((item, index) => (
+          <li
+            key={item.node.id}
+            ref={(el) => (itemRefs.current[index] = el)}
+            className={`${classes.item} ${
+              index === currentIndex ? classes.active : classes.inactive
+            }`}
+            dangerouslySetInnerHTML={{ __html: item.node.content }}
+          />
+        ))}
       </ul>
     </div>
   );

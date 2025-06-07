@@ -1,14 +1,67 @@
 .listHolder {
   max-width: 500px;
-  cursor: grab;
+  cursor: pointer;
   user-select: none;
-
-  &:active {
-    cursor: grabbing;
-  }
+  overflow: hidden;
+  position: relative;
 }
 
 .list {
   margin: 27px 0 0;
   list-style: none;
+  position: relative;
+  padding: 0;
+}
+
+.item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.active {
+  position: relative;
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.inactive {
+  opacity: 0;
+  z-index: 0;
+}
+
+.tooltip {
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  z-index: 1000;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .listHolder:hover .tooltip {
+    opacity: 1;
+  }
+}
+
+.mobileMessage {
+  font-size: 13px;
+  margin-top: -13px;
+  color: white;
+  user-select: none;
+  white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mobileMessage {
+    display: none;
+  }
 }
